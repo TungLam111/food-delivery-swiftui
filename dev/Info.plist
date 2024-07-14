@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Font/SF-Pro-Rounded-Black.otf</string>
+		<string>Font/SF-Pro-Rounded-Bold.otf</string>
+		<string>Font/SF-Pro-Rounded-Heavy.otf</string>
+		<string>Font/SF-Pro-Rounded-Light.otf</string>
+		<string>Font/SF-Pro-Rounded-Medium.otf</string>
+		<string>Font/SF-Pro-Rounded-Regular.otf</string>
+		<string>Font/SF-Pro-Rounded-Semibold.otf</string>
+		<string>Font/SF-Pro-Rounded-Thin.otf</string>
+		<string>Font/SF-Pro-Rounded-Ultralight.otf</string>
+	</array>
+</dict>
+</plist>
