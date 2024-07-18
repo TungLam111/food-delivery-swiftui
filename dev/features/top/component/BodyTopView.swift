@@ -46,6 +46,7 @@ struct BodyTopView: View {
                 LazyHStack(spacing: 10) {
                     ForEach(categories ?? []) { item in
                         Text(item.strCategory)
+                            .font(.custom(FontConstants.defautFont, size: 17))
                             .padding()
                             .foregroundColor(ColorConstants.cFFFA4A0C)
                             .cornerRadius(10)
@@ -70,7 +71,8 @@ struct BodyTopView: View {
                 LazyHStack(spacing: 10) {
                     ForEach(mealsByCategory ?? []) { meal in
                         ZStack (
-                        ) {
+                        ) 
+                        {
                             // Background dish
                             VStack(alignment: .center, spacing: 0){
                                 Spacer().frame(height: 60)
@@ -88,7 +90,7 @@ struct BodyTopView: View {
                                     .padding()
                                     .frame(alignment: .center)
                             }
-                            .frame(width: 220, height: 270)
+                            .frame(width: 220, height: 320)
                             .background(ColorConstants.cFFFFFFFF)
                             .cornerRadius(30)
                             .shadow(radius: 3)
@@ -99,7 +101,7 @@ struct BodyTopView: View {
                                     image
                                         .resizable()
                                         .aspectRatio(contentMode: .fill)
-                                        .frame(width: 100, height: 100)
+                                        .frame(width: 150, height: 150)
                                         .clipShape(Circle())
                                         .overlay(Circle().stroke(Color.white, lineWidth: 2))
                                         .shadow(radius: 3)
@@ -109,7 +111,7 @@ struct BodyTopView: View {
                                 Image(systemName: "photo")
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
-                                    .frame(width: 100, height: 100)
+                                    .frame(width: 150, height: 150)
                                     .clipShape(Circle())
                                     .overlay(Circle().stroke(Color.white, lineWidth: 2))
                                     .shadow(radius: 3)
@@ -118,7 +120,7 @@ struct BodyTopView: View {
                         }
                         .frame(
                             width : 220,
-                            height: 300
+                            height: 350
                         )
                         .onTapGesture {
                             print("Tapped dish: \(meal.strMeal)")

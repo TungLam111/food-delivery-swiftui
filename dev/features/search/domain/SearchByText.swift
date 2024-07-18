@@ -6,3 +6,15 @@
 //
 
 import Foundation
+
+class SearchByTextUsecase {
+    var foodRepository: FoodRepository
+    
+    init(foodRepository: FoodRepository) {
+        self.foodRepository = foodRepository
+    }
+    
+    func execute(text: String) async throws -> MealDetailListModel? {
+        return try await self.foodRepository.searchMealByName(name: text);
+    }
+}

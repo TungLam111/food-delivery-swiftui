@@ -6,10 +6,12 @@ class TopViewModel: ObservableObject {
     private let navigator: NavigationCoordinator;
     var findFoodByCategoryUsecase: FindFoodByCategoryUsecase;
     var findAllCategoriesUsecase: FindAllCategoriesUsecase;
+    var shoppingCartLocalStorage: ShoppingCartLocalStorage<[CartItem]?>;
     
     @Published var currentCategory : String = "Beef"
     @Published var categories: [CategoryFoodModel]? = []
     @Published var mealsByCategory: [MealModel]? = []
+    @Published var cartItems: [CartItem] = []
     
     var cancellables = Set<AnyCancellable>()
     var isLoadingContent: CurrentValueSubject<Bool, Never> = .init(false)
@@ -17,11 +19,13 @@ class TopViewModel: ObservableObject {
     init(
         navigator: NavigationCoordinator,
         findAllCategoriesUsecase: FindAllCategoriesUsecase,
-        findFoodByCategoryUsecase: FindFoodByCategoryUsecase
+        findFoodByCategoryUsecase: FindFoodByCategoryUsecase,
+        shoppingCartLocalStorage: ShoppingCartLocalStorage<[CartItem]?>
     ) {
         self.navigator = navigator
         self.findAllCategoriesUsecase = findAllCategoriesUsecase
         self.findFoodByCategoryUsecase = findFoodByCategoryUsecase
+        self.shoppingCartLocalStorage = shoppingCartLocalStorage
         
         setup()
     }
@@ -29,8 +33,8 @@ class TopViewModel: ObservableObject {
     func setup() {
         findAllCategories();
         findFoodByCategory( category: "Beef");
+        getSavedShoppingCarts();
     }
-    
     
     func findAllCategories() {
         guard !isLoadingContent.value else { return }
@@ -64,9 +68,17 @@ class TopViewModel: ObservableObject {
         }
     }
     
+    func getSavedShoppingCarts() {
+        DispatchQueue.main.async{
+            Task {
+                let data = self.shoppingCartLocalStorage.load()
+                self.cartItems = (data ?? []) ?? [];
+            }
+        }
+    }
+    
+    
     func navToMealDetail(dishId: String) {
-        print(dishId)
-        
         self.navigator.push(RootViewModel.Destination.dishDetail(
             vm:
                 DependencyInjector.instance.viewModelsDI.dishDetail(navigationCoordinator: self.navigator, args: DishDetailArgs(id: dishId))
@@ -75,5 +87,9 @@ class TopViewModel: ObservableObject {
     
     func navToSearch() {
         self.navigator.push(RootViewModel.Destination.search(vm: DependencyInjector.instance.viewModelsDI.seach(navigationCoordinator: self.navigator)))
+    }
+    
+    func navToShoppingCart() {
+        self.navigator.push(RootViewModel.Destination.shoppingCart(vm: DependencyInjector.instance.viewModelsDI.shoppingCart(navigationCoordinator: self.navigator)))
     }
 }

@@ -24,4 +24,8 @@ class UsecasesDependencyInjection {
     private(set) lazy var findMealDetail =  FindMealDetailUsecase(
         foodRepository: self.repositoriesDI.foodRepository   
     );
+    
+    private(set) lazy var searchMealsByName =  SearchByTextUsecase(
+        foodRepository: self.repositoriesDI.foodRepository
+    );
 }

@@ -19,7 +19,9 @@ struct DishDetailView: View {
                     alignment: .leading
                 ) {
                     CustomAppBar(
-                        leadingAction: viewModel.onBack , trailingAction: viewModel.onFavorite
+                        leadingAction: viewModel.onBack , 
+                        trailingAction: viewModel.onFavorite,
+                        trailingIcon: CustomImageIconView(iconName: "heart")
                     )
                         .padding(.horizontal, 50)
                     

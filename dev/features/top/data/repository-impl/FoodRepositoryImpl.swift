@@ -9,12 +9,23 @@ import Foundation
 import Combine
 
 class FoodRepositoryImpl : FoodRepository {
+    
     private var remoteDataSource: FoodDataSourceRemoteContract;
     private var localDataSource: FoodDataSourceLocalContract;
     
     init(remoteDataSource: FoodDataSourceRemoteContract, localDataSource: FoodDataSourceLocalContract) {
         self.remoteDataSource = remoteDataSource
         self.localDataSource = localDataSource
+    }
+    
+    func searchMealByName(name: String) async throws -> MealDetailListModel? {
+        do {
+            let meals : MealDetailListModel? = try await self.remoteDataSource.searchMealsByName(by: name)
+            return meals;
+        } catch {
+            print("Error fetching categories: \(error)")
+            return nil;
+        }
     }
     
     func listAllMealCategory() -> AnyPublisher<CategoryFoodListModel?, Error> {

@@ -29,7 +29,8 @@ final class ViewModelsDependencyInjector  {
         return TopViewModel(
             navigator: navigationCoordinator,
             findAllCategoriesUsecase: usecasesDI.findAllCategories,
-            findFoodByCategoryUsecase: usecasesDI.findFoodByCategory
+            findFoodByCategoryUsecase: usecasesDI.findFoodByCategory,
+            shoppingCartLocalStorage: ShoppingCartLocalStorage(sharedPrefs: UserDefaults.standard)
         )
     }
     
@@ -38,15 +39,19 @@ final class ViewModelsDependencyInjector  {
     }
     
     func history(navigationCoordinator: NavigationCoordinator) -> HistoryViewModel {
-        return HistoryViewModel(navigator: navigationCoordinator)
+        return HistoryViewModel(
+            navigator: navigationCoordinator,
+            searchByTextUsecase: usecasesDI.searchMealsByName
+        )
     }
     
     func order(navigationCoordinator: NavigationCoordinator) -> OrderViewModel {
-        return OrderViewModel(navigator: navigationCoordinator)
+        return OrderViewModel(navigator: navigationCoordinator, searchByTextUsecase: usecasesDI.searchMealsByName)
     }
     
     func seach(navigationCoordinator: NavigationCoordinator) -> SearchViewModel {
-        return SearchViewModel(navigator: navigationCoordinator)
+        return SearchViewModel(navigator: navigationCoordinator,
+                               searchByTextUsecase: usecasesDI.searchMealsByName)
     }
     
     func profile(navigationCoordinator: NavigationCoordinator) -> ProfileViewModel {
@@ -67,6 +72,8 @@ final class ViewModelsDependencyInjector  {
     }
     
     func shoppingCart(navigationCoordinator: NavigationCoordinator) -> ShoppingCartViewModel{
-        return ShoppingCartViewModel(navigator: navigationCoordinator)
+        return ShoppingCartViewModel(navigator: navigationCoordinator,
+                                     shoppingCartLocalStorage: ShoppingCartLocalStorage(sharedPrefs: UserDefaults.standard)
+        )
     }
 }

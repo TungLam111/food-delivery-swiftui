@@ -9,4 +9,8 @@ class ProfileViewModel: ObservableObject {
     ) {
         self.navigator = navigator
     }
+    
+    func onBack() {
+        self.navigator.popLast();
+    }
 }

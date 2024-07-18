@@ -13,9 +13,11 @@ protocol FoodDataSourceRemoteContract {
     func getFoodByCategory(by categoryName: String) -> AnyPublisher<MealListModel?, Error>;
     func getAllCategoriesAsync(categoryName: String) async throws -> MealListModel?;
     func getMealDetail(dishId: String) async throws -> MealDetailListModel?;
+    func searchMealsByName(by name: String) async throws -> MealDetailListModel?
 }
 
 final class FoodDataSourceRemote : FoodDataSourceRemoteContract {
+    
     private var networkContract: NetworkServiceContract;
     
     init(networkContract: NetworkServiceContract) {
@@ -52,5 +54,19 @@ final class FoodDataSourceRemote : FoodDataSourceRemoteContract {
         ])
         let data = try await self.networkContract.fetchConcurrency(type: MealDetailListModel?.self, url: formEndpoint.url, headers: formEndpoint.headers);
         return data;
+    }
+    
+    func searchMealsByName(by name: String) async throws -> MealDetailListModel? {
+        let formEndpoint = CustomEndpoint(path: NetworkUrlConstant.searchFoodUrl,
+                                          queryItems: [
+                                            URLQueryItem(name: "s", value: name)
+                                          ])
+      
+      let data = try await self.networkContract.fetchConcurrency(
+        type: MealDetailListModel?.self,
+        url: formEndpoint.url,
+        headers: formEndpoint.headers);
+      return data;
+        
     }
 }

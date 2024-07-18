@@ -62,3 +62,14 @@ class MealDetail: Codable, Hashable, Equatable, Identifiable {
         return lhs.idMeal == rhs.idMeal
     }
 }
+
+// Extended MealDetail to include price and quantity
+extension MealDetail {
+    var price: String {
+        return "$19.99" // Placeholder price, replace with actual logic
+    }
+
+    var quantity: Int {
+        return 1 // Placeholder quantity, replace with actual logic
+    }
+}

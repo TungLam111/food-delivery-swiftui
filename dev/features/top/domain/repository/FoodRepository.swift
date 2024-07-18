@@ -10,7 +10,7 @@ import Combine
 
 protocol FoodRepository {
     func findFoodById(id: String) async throws -> MealDetailListModel?
-    func searchMealByName(name: String)
+    func searchMealByName(name: String) async throws -> MealDetailListModel?
     func listAllMealCategory() -> AnyPublisher<CategoryFoodListModel?, Error>
     func findFoodByCategory(category: String) async throws -> MealListModel?
 }

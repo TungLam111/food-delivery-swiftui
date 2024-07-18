@@ -20,6 +20,7 @@ struct ColorConstants {
     static let cFFEFEEEE = Color(hex: 0xEFEEEE);
     static let cFFF6F6F9 = Color(hex: 0xF6F6F9);
     static let cFFC4C4C4 = Color(hex: 0xC4C4C4);
+    static let cFFF5F5F8 = Color(hex: 0xF5F5F8);
 
 }
 
