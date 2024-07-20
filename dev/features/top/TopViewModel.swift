@@ -6,7 +6,7 @@ class TopViewModel: ObservableObject {
     private let navigator: NavigationCoordinator;
     var findFoodByCategoryUsecase: FindFoodByCategoryUsecase;
     var findAllCategoriesUsecase: FindAllCategoriesUsecase;
-    var shoppingCartLocalStorage: ShoppingCartLocalStorage<[CartItem]?>;
+    var shoppingCartLocalStorage: ShoppingCartLocalStorage;
     
     @Published var currentCategory : String = "Beef"
     @Published var categories: [CategoryFoodModel]? = []
@@ -20,7 +20,7 @@ class TopViewModel: ObservableObject {
         navigator: NavigationCoordinator,
         findAllCategoriesUsecase: FindAllCategoriesUsecase,
         findFoodByCategoryUsecase: FindFoodByCategoryUsecase,
-        shoppingCartLocalStorage: ShoppingCartLocalStorage<[CartItem]?>
+        shoppingCartLocalStorage: ShoppingCartLocalStorage
     ) {
         self.navigator = navigator
         self.findAllCategoriesUsecase = findAllCategoriesUsecase
@@ -72,7 +72,7 @@ class TopViewModel: ObservableObject {
         DispatchQueue.main.async{
             Task {
                 let data = self.shoppingCartLocalStorage.load()
-                self.cartItems = (data ?? []) ?? [];
+                self.cartItems = data ?? self.cartItems;
             }
         }
     }

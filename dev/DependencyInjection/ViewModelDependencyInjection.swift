@@ -63,6 +63,7 @@ final class ViewModelsDependencyInjector  {
         return DishDetailViewModel(
             navigator: navigationCoordinator,
             findMealDetailUsecase: usecasesDI.findMealDetail,
+            shoppingCartLocalStorage: ShoppingCartLocalStorage(sharedPrefs: UserDefaults.standard),
             argument: args
         )
     }

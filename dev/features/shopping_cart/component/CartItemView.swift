@@ -6,19 +6,37 @@
 //
 
 import SwiftUI
+import URLImage
 
 struct CartItemView: View {
     @Binding var item: CartItem;
-    var onAdd : (UUID) -> Void;
-    var onSubtract : (UUID) -> Void;
+    var onAdd : (String) -> Void;
+    var onSubtract : (String) -> Void;
     
     var body: some View {
         VStack{
             HStack {
-                Image(item.imageName)
-                    .resizable()
+                
+                if let imageUrl = URL(string: item.imageName) {
+                    URLImage(imageUrl) { image in
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fill)
+                            .frame(width: 60, height: 60)
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            .padding(.trailing, 10)
+                    }
+                } else {
+                    VStack {
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle())
+                    }
                     .frame(width: 60, height: 60)
-                    .cornerRadius(25)
+                    .clipShape(Circle())
+                    .overlay(Circle().stroke(Color.white, lineWidth: 2))
+                    .shadow(radius: 3)
+                }
+                
                 
                 VStack(alignment: .leading) {
                     Text(item.name)
@@ -84,8 +102,8 @@ struct CartItemView: View {
 struct SwipeableView: View {
     @Binding var item: CartItem
     let onRemove: () -> Void
-    var onAdd : (UUID) -> Void;
-    var onSubtract : (UUID) -> Void;
+    var onAdd : (String) -> Void;
+    var onSubtract : (String) -> Void;
     var onDetectVerticalScroll: (CGSize) -> Void;
     
     @State private var offset: CGFloat = 0
@@ -93,8 +111,8 @@ struct SwipeableView: View {
     
     init(onRemove: @escaping () -> Void,
          item: Binding<CartItem>,
-         onAddItem: @escaping (UUID) -> Void,
-         onSubtractItem: @escaping (UUID) -> Void,
+         onAddItem: @escaping (String) -> Void,
+         onSubtractItem: @escaping (String) -> Void,
          onDetectVerticalScroll: @escaping (CGSize) -> Void
     ) {
         self.onRemove = onRemove

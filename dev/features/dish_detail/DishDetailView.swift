@@ -90,6 +90,7 @@ struct DishDetailView: View {
             // Action button
             AppActionButton(
                 action: {
+                    viewModel.addToCart()
                 }, text: "Add to cart")
             .padding(.horizontal, 30)
             .padding(.bottom, 40)
@@ -110,7 +111,7 @@ struct DishDetailView: View {
             findMealDetailUsecase: FindMealDetailUsecase(
                 foodRepository: FoodRepositoryImpl(
                     remoteDataSource: FoodDataSourceRemote(networkContract: NetworkService()),
-                    localDataSource: FoodDataSourceLocal())),
+                    localDataSource: FoodDataSourceLocal())), shoppingCartLocalStorage: ShoppingCartLocalStorage(sharedPrefs: UserDefaults.standard),
             argument: DishDetailArgs(id: "52772")
         )
     )

@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct HeaderTopView: View {
+    var onTapShoppingCart: () -> Void;
+    
     var body: some View {
         VStack(
             alignment: .leading
@@ -18,6 +20,9 @@ struct HeaderTopView: View {
                 Spacer()
                 Image(systemName: "cart")
                     .font(.custom(FontConstants.defautFont, size: 24))
+                    .onTapGesture {
+                        onTapShoppingCart()
+                    }
             }.padding(.horizontal, 40 )
             
             Spacer().frame(height: 43)
@@ -32,5 +37,7 @@ struct HeaderTopView: View {
 }
 
 #Preview {
-    HeaderTopView()
+    HeaderTopView(
+        onTapShoppingCart: {}
+    )
 }

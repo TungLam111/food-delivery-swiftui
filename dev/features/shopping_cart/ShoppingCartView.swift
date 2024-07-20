@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct CartItem: Identifiable, Decodable, Encodable {
-    var id = UUID()
+    var id : String
     let imageName: String
     let name: String
     let price: String

@@ -15,7 +15,11 @@ struct TopView: View {
             ScrollView(
                 
             ){
-                HeaderTopView()
+                HeaderTopView(
+                    onTapShoppingCart: {
+                        viewModel.navToShoppingCart()
+                    }
+                )
                     .padding(.top, 60)
                     .padding(.bottom, 28)
                 BodyTopView(
@@ -55,7 +59,9 @@ struct TopView: View {
                         viewModel.navToShoppingCart()
                     }
             }
-        }
+        }.onAppear(perform: {
+            viewModel.getSavedShoppingCarts();
+        })
     }
 }
 
