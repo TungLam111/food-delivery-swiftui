@@ -11,7 +11,8 @@ import Combine
 protocol FoodDataSourceRemoteContract {
     func getAllCategories() -> AnyPublisher<CategoryFoodListModel?, Error>;
     func getFoodByCategory(by categoryName: String) -> AnyPublisher<MealListModel?, Error>;
-    func getAllCategoriesAsync(categoryName: String) async throws -> MealListModel?;
+    
+    func getFoodByCategoryAsync(categoryName: String) async throws -> MealListModel?;
     func getMealDetail(dishId: String) async throws -> MealDetailListModel?;
     func searchMealsByName(by name: String) async throws -> MealDetailListModel?
 }
@@ -25,48 +26,83 @@ final class FoodDataSourceRemote : FoodDataSourceRemoteContract {
     }
     
     func getAllCategories() -> AnyPublisher<CategoryFoodListModel?, Error> {
-        let formEndpoint = CustomEndpoint(path: NetworkUrlConstant.categoryUrl)
+        let formEndpoint = CustomEndpoint(
+            path: NetworkUrlConstant.categoryUrl,
+            headers: nil,
+            queries: nil
+        )
         return self.networkContract.fetch(
             type: CategoryFoodListModel?.self,
             url: formEndpoint.url,
-            headers: formEndpoint.headers
+            body: nil
         );
     }
     
     func getFoodByCategory(by categoryName: String) -> AnyPublisher<MealListModel?, Error> {
-        let formEndpoint = CustomEndpoint(path: NetworkUrlConstant.foodListFilterUrl, queryItems: [
-            URLQueryItem(name: "c", value: categoryName)
-        ])
-        return self.networkContract.fetch(type: MealListModel?.self, url: formEndpoint.url, headers: formEndpoint.headers);
+        var queries: [String: String] = [:]
+        queries["c"] = categoryName
+        
+        let formEndpoint = CustomEndpoint(
+            path: NetworkUrlConstant.foodListFilterUrl,
+            headers: nil,
+            queries: queries
+        )
+        
+        return self.networkContract.fetch(
+            type: MealListModel?.self,
+            url: formEndpoint.url,
+            body: nil
+        );
     }
     
-    func getAllCategoriesAsync(categoryName: String) async throws -> MealListModel? {
-        let formEndpoint = CustomEndpoint(path: NetworkUrlConstant.foodListFilterUrl, queryItems: [
-            URLQueryItem(name: "c", value: categoryName)
-        ])
-        let data = try await self.networkContract.fetchConcurrency(type: MealListModel?.self, url: formEndpoint.url, headers: formEndpoint.headers);
+    func getFoodByCategoryAsync(categoryName: String) async throws -> MealListModel? {
+        var queries: [String: String] = [:]
+        queries["c"] = categoryName
+        
+        let formEndpoint = CustomEndpoint(
+            path: NetworkUrlConstant.foodListFilterUrl,
+            headers: nil,
+            queries: queries
+        )
+        
+        let data = try await self.networkContract.fetchConcurrency(type: MealListModel?.self, customUrl: formEndpoint.url, body: nil, method: "GET");
         return data;
     }
     
     func getMealDetail(dishId: String) async throws -> MealDetailListModel? {
-        let formEndpoint = CustomEndpoint(path: NetworkUrlConstant.lookupFullMealDetailUrl, queryItems: [
-            URLQueryItem(name: "i", value: dishId)
-        ])
-        let data = try await self.networkContract.fetchConcurrency(type: MealDetailListModel?.self, url: formEndpoint.url, headers: formEndpoint.headers);
+        var queries: [String: String] = [:]
+        queries["i"] = dishId
+        
+        let formEndpoint = CustomEndpoint(
+            path: NetworkUrlConstant.lookupFullMealDetailUrl,
+            headers: nil,
+            queries: queries
+        )
+        let data = try await self.networkContract.fetchConcurrency(
+            type: MealDetailListModel?.self, customUrl: formEndpoint.url,
+            body: nil,
+            method: "GET"
+        );
         return data;
     }
     
     func searchMealsByName(by name: String) async throws -> MealDetailListModel? {
+        
+        var queries: [String: String] = [:]
+        queries["s"] = name
+        
         let formEndpoint = CustomEndpoint(path: NetworkUrlConstant.searchFoodUrl,
-                                          queryItems: [
-                                            URLQueryItem(name: "s", value: name)
-                                          ])
-      
-      let data = try await self.networkContract.fetchConcurrency(
-        type: MealDetailListModel?.self,
-        url: formEndpoint.url,
-        headers: formEndpoint.headers);
-      return data;
+                                    headers: nil,
+        queries: queries
+        )
+        
+        let data = try await self.networkContract.fetchConcurrency(
+            type: MealDetailListModel?.self,
+            customUrl: formEndpoint.url,
+            body: nil,
+            method: "GET"
+        );
+        return data;
         
     }
 }

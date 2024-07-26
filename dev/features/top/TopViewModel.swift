@@ -32,7 +32,7 @@ class TopViewModel: ObservableObject {
     
     func setup() {
         findAllCategories();
-        findFoodByCategory( category: "Beef");
+        findFoodByCategory(category: "Beef");
         getSavedShoppingCarts();
     }
     

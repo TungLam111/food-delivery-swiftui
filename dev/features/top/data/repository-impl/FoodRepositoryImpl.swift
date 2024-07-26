@@ -34,7 +34,8 @@ class FoodRepositoryImpl : FoodRepository {
     
     func findFoodByCategory(category: String) async throws -> MealListModel? {
         do {
-            let meals : MealListModel? = try await self.remoteDataSource.getAllCategoriesAsync( categoryName: category)
+            print(category)
+            let meals : MealListModel? = try await self.remoteDataSource.getFoodByCategoryAsync( categoryName: category)
             return meals;
         } catch {
             print("Error fetching categories: \(error)")

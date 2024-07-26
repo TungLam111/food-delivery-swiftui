@@ -19,4 +19,9 @@ class RepositoriesDependencyInjection {
             remoteDataSource: self.datasourcesDI.getFoodDataSourceRemoteContract ,
             localDataSource: self.datasourcesDI.getFoodDataSourceLocalContract
         )
+    
+    private(set) lazy var userRepository = UserRepositoryImpl(
+        remoteDataSource: self.datasourcesDI.getUserDataSourceRemoteContract ,
+            localDataSource: self.datasourcesDI.getUserDataSourceLocalContract
+        )
 }

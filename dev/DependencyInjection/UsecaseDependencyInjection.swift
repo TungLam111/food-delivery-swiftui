@@ -28,4 +28,12 @@ class UsecasesDependencyInjection {
     private(set) lazy var searchMealsByName =  SearchByTextUsecase(
         foodRepository: self.repositoriesDI.foodRepository
     );
+    
+    private(set) lazy var loginUsecase =  LoginUsecase(
+        userRepository: self.repositoriesDI.userRepository
+    );
+    
+    private(set) lazy var signupUsecase =  CreateAccountUsecase(
+        userRepository: self.repositoriesDI.userRepository
+    );
 }

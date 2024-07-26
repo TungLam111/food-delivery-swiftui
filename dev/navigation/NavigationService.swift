@@ -22,6 +22,8 @@ final class RootViewModel: ObservableObject, Identifiable {
         case dishDetail(vm: DishDetailViewModel)
         case checkout(vm: CheckoutViewModel)
         case shoppingCart(vm: ShoppingCartViewModel)
+        case login(vm: LoginViewModel)
+        case signup(vm: SignupViewModel)
         
         func hash(into hasher: inout Hasher) {
             var index = 0
@@ -46,6 +48,10 @@ final class RootViewModel: ObservableObject, Identifiable {
                 index = 8
             case .shoppingCart:
                 index = 9
+            case .login:
+                index = 10
+            case .signup:
+                index = 11
             }
             hasher.combine(index)
         }
@@ -84,6 +90,13 @@ final class RootViewModel: ObservableObject, Identifiable {
 
 
 extension RootViewModel : NavigationCoordinator {
+    func pushAndRemoveLast(_ path: any Hashable) {
+        DispatchQueue.main.async { [weak self] in
+            self?.navPath.removeLast()
+            self?.navPath.append(path)
+        }
+    }
+    
     public func push(_ path: any Hashable) {
            DispatchQueue.main.async { [weak self] in
                self?.navPath.append(path)
@@ -101,5 +114,5 @@ extension RootViewModel : NavigationCoordinator {
 public protocol NavigationCoordinator {
     func push(_ path: any Hashable)
     func popLast()
-
+    func pushAndRemoveLast(_ path: any Hashable)
 }

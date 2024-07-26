@@ -1,10 +1,3 @@
-//
-//  ContentView.swift
-//  dev
-//
-//  Created by phan dam tung lam on 7/7/24.
-//
-
 import SwiftUI
 
 struct LandingView: View {
@@ -13,33 +6,77 @@ struct LandingView: View {
     
     var body: some View {
         VStack (alignment: .leading) {
-            CircleView(
-            imageName: "main_icon"
-            )
-        
-            Text(StringConstants.foodForEveryone)
-                .font(Font.custom("SF Pro Rounded Heavy", size: CGFloat(65))) // Closest to 800
-                .foregroundColor(ColorConstants.cFFFFFFFF)
-                .padding(.leading, 49).lineLimit(2)
-            
-            ZStack(alignment: .leading) {
-                ImageMiddleBoyWidget()
-                ImageMiddlGirlWidget()
+            // Top part of the screen with image
+            VStack (alignment: .leading) {
+                Spacer()
+                ScrollingImageCarousel(
+                    currentPage: $viewModel.currentPage,
+                    imageUrls:
+                        self.viewModel.landingData.map { $0.image },
+                    onChange: { index in
+                        self.viewModel.currentPage = index
+                    })
+                .frame(
+                    maxWidth: .infinity, maxHeight: .infinity, alignment: .center
+                )
+                
+                Spacer()
             }
+            .frame(
+                maxWidth: .infinity
+            )
+            .background(ColorConstants.cFF2E2E2D)
+            .padding(.top, 100)
             
-            ActionButton(action: {
-                viewModel.navToAuthentication();
-            })
-                .padding(.horizontal, 50) // Horizontal padding
+            
+            VStack {
+                VStack(spacing: 50) {
+                    Text(viewModel.landingData[viewModel.currentPage].title)
+                        .customFont(size: 30, weight: .medium)
+                    
+                    Text(viewModel.landingData[viewModel.currentPage].subtitle)
+                        .customFont(size: 20,  weight: .medium)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 32)
+                    
+                    Button(action: {
+                        viewModel.navToAuthentication()
+                    }) {
+                        Text(viewModel.landingData[viewModel.currentPage].buttonTitle)
+                            .customFont(size: 20)
+                            .foregroundColor(.white)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(ColorConstants.cFF2E2E2D)
+                            .cornerRadius(10)
+                    }
+                }
+                .padding(.bottom, 16)
+                .padding(.horizontal, 20)
+                .background(ColorConstants.cFFFAF8F5)
+            }.frame(
+                maxWidth: .infinity,
+                maxHeight: UIScreen.main.bounds.height * 0.35
+            ).padding(.top, 30)
+                .padding(.bottom, 30)
+                .background(ColorConstants.cFFFAF8F5)
+                .clipShape(
+                    .rect(
+                        topLeadingRadius: 20,
+                        topTrailingRadius: 20
+                    )
+                )
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .padding(.bottom, 36) // Add horizontal and bottom padding to VStack
-        .padding(.top, 10) // Top padding for the entire VStack
-        .background(ColorConstants.cFFFF4B3A)
         .navigationBarBackButtonHidden()
+        .edgesIgnoringSafeArea(.all)
+        .background(ColorConstants.cFF2E2E2D)
+        .frame(
+            maxWidth: .infinity,
+            maxHeight: .infinity
+        )
+        .ignoresSafeArea()
     }
 }
-
 
 
 #Preview {

@@ -11,11 +11,10 @@ import SwiftUI
 
 struct devApp: App {
     @ObservedObject var rootViewModel = RootViewModel();
-
     var body: some Scene {
         WindowGroup {
             NavigationStack(path: $rootViewModel.navPath) {
-                HomeView(viewModel: DependencyInjector.instance.viewModelsDI.home(navigationCoordinator: rootViewModel))
+                LandingView(viewModel: DependencyInjector.instance.viewModelsDI.landing(navigationCoordinator: rootViewModel))
                 .navigationDestination(for: RootViewModel.Destination.self) { destination in
                     switch destination {
                     case .landing(let vm):
@@ -38,9 +37,14 @@ struct devApp: App {
                         CheckoutView(viewModel: vm)
                     case .shoppingCart(let vm):
                         ShoppingCartView(viewModel: vm)
+                    case .login(vm: let vm):
+                        LoginView(viewModel: vm)
+                    case .signup(vm: let vm):
+                        SignupView(viewModel: vm)
                     }
                 }
             }
         }
     }
 }
+

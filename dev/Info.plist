@@ -4,15 +4,18 @@
 <dict>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Font/SF-Pro-Rounded-Black.otf</string>
-		<string>Font/SF-Pro-Rounded-Bold.otf</string>
-		<string>Font/SF-Pro-Rounded-Heavy.otf</string>
-		<string>Font/SF-Pro-Rounded-Light.otf</string>
-		<string>Font/SF-Pro-Rounded-Medium.otf</string>
-		<string>Font/SF-Pro-Rounded-Regular.otf</string>
-		<string>Font/SF-Pro-Rounded-Semibold.otf</string>
-		<string>Font/SF-Pro-Rounded-Thin.otf</string>
-		<string>Font/SF-Pro-Rounded-Ultralight.otf</string>
+		<string>Font/Kodchasan-BoldItalic.ttf</string>
+		<string>Font/Kodchasan-Bold.ttf</string>
+		<string>Font/Kodchasan-ExtraLight.ttf</string>
+		<string>Font/Kodchasan-ExtraLightItalic.ttf</string>
+		<string>Font/Kodchasan-Italic.ttf</string>
+		<string>Font/Kodchasan-Light.ttf</string>
+		<string>Font/Kodchasan-LightItalic.ttf</string>
+		<string>Font/Kodchasan-Medium.ttf</string>
+		<string>Font/Kodchasan-MediumItalic.tff</string>
+		<string>Font/Kodchasan-Regular.tff</string>
+		<string>Font/Kodchasan-SemiBold.tff</string>
+		<string>Font/Kodchasan-SemiBoldItalic.tff</string>
 	</array>
 </dict>
 </plist>

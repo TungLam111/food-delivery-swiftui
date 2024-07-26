@@ -4,11 +4,19 @@
 //
 //  Created by phan dam tung lam on 11/7/24.
 //
-
 import Foundation
 
 struct MealListModel: Codable, Hashable {
-    let meals: [MealModel]
+    let meals: [MealModel]?
+    
+    enum CodingKeys: String, CodingKey {
+        case meals
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.meals = try container.decodeIfPresent([MealModel].self, forKey: .meals) ?? []
+    }
 }
 
 class MealModel: Codable, Hashable, Equatable, Identifiable {
@@ -35,3 +43,4 @@ class MealModel: Codable, Hashable, Equatable, Identifiable {
            hasher.combine(idMeal)
        }
 }
+

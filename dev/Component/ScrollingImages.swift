@@ -1,10 +1,11 @@
 import SwiftUI
 
 struct ScrollingImageCarousel: View {
-    let imageUrls: [String]
+    @Binding var currentPage: Int
+    let imageUrls: [String];
+    var onChange : (Int) -> Void;
     
-    @State private var currentPage = 0
-    let carouselHeight: CGFloat = 240 // Set your desired height here
+    let carouselHeight: CGFloat = 300 // Set your desired height here
 
     var body: some View {
         VStack {
@@ -12,28 +13,34 @@ struct ScrollingImageCarousel: View {
                     HStack(spacing: 0) {
                         ForEach(imageUrls.indices, id: \.self) { index in
                             let imageUrl = imageUrls[index]
-                            AsyncImage(url: URL(string: imageUrl)) { phase in
-                                switch phase {
-                                case .empty:
-                                    ProgressView()
-                                        .frame(width: geometry.size.width, height: carouselHeight)
-                                case .success(let image):
-                                    image
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(width: geometry.size.width, height: carouselHeight)
-                                        .clipShape(Circle())
-                                case .failure:
-                                    Image(systemName: "photo")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(width: geometry.size.width, height: carouselHeight)
-                                        .clipShape(Circle())
-                                @unknown default:
-                                    EmptyView()
+                            if imageUrl.starts(with: "https") {
+                                AsyncImage(url: URL(string: imageUrl)) { phase in
+                                    switch phase {
+                                    case .empty:
+                                        ProgressView()
+                                            .frame(width: geometry.size.width, height: carouselHeight)
+                                    case .success(let image):
+                                        image
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                            .frame(width: geometry.size.width, height: carouselHeight)
+                                            .clipShape(Circle())
+                                    case .failure:
+                                        Image(systemName: "photo")
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                            .frame(width: geometry.size.width, height: carouselHeight)
+                                            .clipShape(Circle())
+                                    @unknown default:
+                                        EmptyView()
+                                    }
                                 }
+                            } else {
+                                Image(imageUrl)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: geometry.size.width, height: carouselHeight)
                             }
-                            .shadow(radius: 10)
                         }
                     }
                     .frame(width: geometry.size.width, height: carouselHeight, alignment: .leading)
@@ -45,15 +52,19 @@ struct ScrollingImageCarousel: View {
                                 let offset = value.translation.width
                                 if (offset > 10) {
                                     if (self.currentPage >= 1) {
-                                        self.currentPage -= 1
+                                        withAnimation {
+                                            self.currentPage -= 1
+                                        }
+                                        onChange(self.currentPage)
                                     }
                                 } else if (offset < -10) {
                                     if (self.currentPage < imageUrls.count - 1 ) {
-                                        self.currentPage += 1
+                                        withAnimation {
+                                            self.currentPage += 1
+                                        }
+                                        onChange(self.currentPage)
                                     }
                                 }
-                                
-                                print(self.currentPage)
                             }
                     )
                 .frame(width: geometry.size.width, height: carouselHeight)
@@ -63,16 +74,16 @@ struct ScrollingImageCarousel: View {
                 }
             }.frame(height: carouselHeight)
             
-            Spacer().frame(height: 15)
+            Spacer()
             
             HStack(alignment: .center, spacing: 10) {
                 ForEach(imageUrls.indices, id: \.self) { index in
                     if (index == currentPage) {
-                        return Circle()
-                            .fill(ColorConstants.cFFFA4A0C)
-                            .frame(width: 10, height: 10)
+                         Capsule()
+                            .fill(ColorConstants.cFF267860)
+                            .frame(width: 40, height: 10)
                     } else {
-                        return Circle()
+                         Circle()
                             .fill(ColorConstants.cFFC4C4C4)
                             .frame(width: 10, height: 10)
                        }

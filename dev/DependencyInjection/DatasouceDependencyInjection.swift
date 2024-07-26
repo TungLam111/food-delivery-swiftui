@@ -20,5 +20,12 @@ class DatasoucesDependencyInjection {
     );
     
     private(set) lazy var getFoodDataSourceLocalContract = FoodDataSourceLocal()
+
+    private(set) lazy var getUserDataSourceRemoteContract = UserDataSourceRemote(
+        networkContract: self.networkService
+    );
+    
+    private(set) lazy var getUserDataSourceLocalContract = UserDataSourceLocal()
+    
     
 }

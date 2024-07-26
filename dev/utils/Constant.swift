@@ -21,7 +21,11 @@ struct ColorConstants {
     static let cFFF6F6F9 = Color(hex: 0xF6F6F9);
     static let cFFC4C4C4 = Color(hex: 0xC4C4C4);
     static let cFFF5F5F8 = Color(hex: 0xF5F5F8);
-
+    static let cFF267860 = Color(hex: 0x267860); // main green
+    static let cFF67544A = Color(hex: 0x67544A); // main brown
+    static let cFF9D724D = Color(hex: 0x9D724D); // main espresso
+    static let cFF2E2E2D = Color(hex: 0x2E2E2D);
+    static let cFFFAF8F5 = Color(hex: 0xFAF8F5);
 }
 
 struct StringConstants {
@@ -30,7 +34,7 @@ struct StringConstants {
     static let forgotPasscode = "Forgot passcode ?";
     static let login = "Login";
     static let signup = "Signup";
-    static let emailAddress = "Email address";
+    static let emailAddress = "E-mail";
     static let password = "Password";
 }
 
@@ -39,7 +43,7 @@ struct NumberConstants {
 }
 
 struct FontConstants {
-   static let defautFont = "SF Pro Rounded";
+   static let defautFont = "Kodchasan";
 }
 
 struct StyleConstant {

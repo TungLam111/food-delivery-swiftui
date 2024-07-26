@@ -25,20 +25,25 @@ struct DishDetailView: View {
                     )
                         .padding(.horizontal, 50)
                     
-                    ScrollingImageCarousel(imageUrls: [
-                        viewModel.mealDetail?.strMealThumb ?? "",
-                        "https://images.pexels.com/photos/1170986/pexels-photo-1170986.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-                        viewModel.mealDetail?.strMealThumb ?? "",
-                        "https://cdn.britannica.com/79/232779-050-6B0411D7/German-Shepherd-dog-Alsatian.jpg",
-                        viewModel.mealDetail?.strMealThumb ?? "",
-                        "https://images.pexels.com/photos/1170986/pexels-photo-1170986.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-                        viewModel.mealDetail?.strMealThumb ?? "",
-                        "https://cdn.britannica.com/79/232779-050-6B0411D7/German-Shepherd-dog-Alsatian.jpg",
-                        viewModel.mealDetail?.strMealThumb ?? "",
-                        "https://images.pexels.com/photos/1170986/pexels-photo-1170986.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
-                    ])
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .padding(.vertical, 20)
+//                    ScrollingImageCarousel(
+//                        currentPage: 0,
+//                        imageUrls: [
+//                        viewModel.mealDetail?.strMealThumb ?? "",
+//                        "https://images.pexels.com/photos/1170986/pexels-photo-1170986.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+//                        viewModel.mealDetail?.strMealThumb ?? "",
+//                        "https://cdn.britannica.com/79/232779-050-6B0411D7/German-Shepherd-dog-Alsatian.jpg",
+//                        viewModel.mealDetail?.strMealThumb ?? "",
+//                        "https://images.pexels.com/photos/1170986/pexels-photo-1170986.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
+//                        viewModel.mealDetail?.strMealThumb ?? "",
+//                        "https://cdn.britannica.com/79/232779-050-6B0411D7/German-Shepherd-dog-Alsatian.jpg",
+//                        viewModel.mealDetail?.strMealThumb ?? "",
+//                        "https://images.pexels.com/photos/1170986/pexels-photo-1170986.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
+//                    ], onChange: {
+//                        index in
+//                        
+//                    })
+//                    .frame(maxWidth: .infinity, alignment: .center)
+//                    .padding(.vertical, 20)
                     
                     Text(viewModel.mealDetail?.strMeal ?? "")
                         .font(.title)

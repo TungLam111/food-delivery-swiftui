@@ -77,4 +77,21 @@ final class ViewModelsDependencyInjector  {
                                      shoppingCartLocalStorage: ShoppingCartLocalStorage(sharedPrefs: UserDefaults.standard)
         )
     }
+    
+    func login(navigationCoordinator: NavigationCoordinator) -> LoginViewModel{
+        return LoginViewModel(
+            navigator: navigationCoordinator,
+            argument: nil,
+            loginUsecase: self.usecasesDI.loginUsecase
+        )
+    }
+    
+    func signup(navigationCoordinator: NavigationCoordinator) -> SignupViewModel{
+        return SignupViewModel(
+            navigator: navigationCoordinator,
+            argument: nil,
+            createAccountUsecase: usecasesDI.signupUsecase
+        )
+    }
+
 }

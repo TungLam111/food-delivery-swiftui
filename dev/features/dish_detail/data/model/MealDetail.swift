@@ -1,5 +1,9 @@
 struct MealDetailListModel: Codable, Hashable {
-    let meals: [MealDetail]
+    var meals: [MealDetail]
+    
+    init(meals: [MealDetail]) {
+        self.meals = meals
+    }
 }
 
 class MealDetail: Codable, Hashable, Equatable, Identifiable {
