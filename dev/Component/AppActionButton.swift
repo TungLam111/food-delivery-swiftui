@@ -18,7 +18,7 @@ struct AppActionButton: View {
         Button(action: action) {
                 Text(text)
                     .font(.custom(FontConstants.defautFont, size: 17))
-                    .fontWeight(.semibold)
+                    .fontWeight(.medium)
                     .padding(.vertical, 15)
                     .frame(maxWidth: .infinity)
                     .foregroundColor(ColorConstants.cFFFFFFFF)

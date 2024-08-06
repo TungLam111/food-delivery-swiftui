@@ -25,12 +25,21 @@ struct HomeView: View {
                     Text("Home")
                 }
                 
+                HistoryView(
+                    viewModel: DependencyInjector.instance.viewModelsDI.history(navigationCoordinator: viewModel.navigator)
+                )
+                .tabItem {
+                    Image(systemName: "clock.fill")
+                    
+                    Text("History")
+                }
+                
                 OrderView(
                     viewModel: DependencyInjector.instance.viewModelsDI.order(navigationCoordinator: viewModel.navigator)
                 )
                 .tabItem {
                     Image(systemName: "heart.fill")
-                    Text("Order")
+                    Text("Orders")
                 }
                 
                 ProfileView(
@@ -41,14 +50,6 @@ struct HomeView: View {
                     Text("Profile")
                 }
                 
-                HistoryView(
-                    viewModel: DependencyInjector.instance.viewModelsDI.history(navigationCoordinator: viewModel.navigator)
-                )
-                .tabItem {
-                    Image(systemName: "clock.fill")
-                    
-                    Text("History")
-                }
             }.accentColor(ColorConstants.cFFFA4A0C)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -61,8 +62,6 @@ struct HomeView: View {
 
 #Preview {
     HomeView(
-        viewModel: HomeViewModel(
-            navigator: MockNavigationCoordinator()
-        )
+        viewModel: DependencyInjector.instance.viewModelsDI.home(navigationCoordinator: RootViewModel())
     )
 }

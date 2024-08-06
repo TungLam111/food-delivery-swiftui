@@ -20,8 +20,17 @@ class RepositoriesDependencyInjection {
             localDataSource: self.datasourcesDI.getFoodDataSourceLocalContract
         )
     
+    private(set) lazy var basketRepository = BasketRepositoryImpl(
+            remoteDataSource: self.datasourcesDI.getBasketDataSourceRemoteContract ,
+            localDataSource: self.datasourcesDI.getBasketDataSourceLocalContract
+        )
+    
     private(set) lazy var userRepository = UserRepositoryImpl(
         remoteDataSource: self.datasourcesDI.getUserDataSourceRemoteContract ,
             localDataSource: self.datasourcesDI.getUserDataSourceLocalContract
         )
+    
+    private(set) lazy var paymentRepository = PaymentRepositoryImpl(
+        remoteDatasource: self.datasourcesDI.paymentDataSourceLocalContract
+    )
 }

@@ -36,4 +36,52 @@ class UsecasesDependencyInjection {
     private(set) lazy var signupUsecase =  CreateAccountUsecase(
         userRepository: self.repositoriesDI.userRepository
     );
+    
+    private(set) lazy var addToShoppingBasket =  AddToShoppingBasketUsecase(
+        basketRepository: self.repositoriesDI.basketRepository
+    );
+    
+    private(set) lazy var updateShoppingBasket =  UpdateBasketUsecase(
+        basketRepository: self.repositoriesDI.basketRepository
+    );
+    
+    private(set) lazy var getBasketListUsecase =  GetBasketListUsecase(
+        basketRepository: self.repositoriesDI.basketRepository
+    );
+    
+    private(set) lazy var deleteBasketUsecase =  DeleteBasketUsecase(
+        basketRepository: self.repositoriesDI.basketRepository
+    );
+    
+    private(set) lazy var getOneBasketUsecase =  FindOneBasketUsecase(
+        basketRepository: self.repositoriesDI.basketRepository
+    );
+    
+    private(set) lazy var removePaymentCard =  RemovePaymentCardUsecase(
+        paymentRepository: self.repositoriesDI.paymentRepository
+    );
+    
+    private(set) lazy var getPaymentMethod =  GetPaymentMethodUsecase(
+        paymentRepository: self.repositoriesDI.paymentRepository
+    );
+    
+    private(set) lazy var getPaymentCards =  GetPaymentCardsUsecase(
+        paymentRepository: self.repositoriesDI.paymentRepository
+    );
+    
+    private(set) lazy var addPaymentCard =  AddPaymentCardUsecase(
+        paymentRepository: self.repositoriesDI.paymentRepository
+    );
+    
+    private(set) lazy var payComplete =  PaymentCompleteUsecase(
+        paymentRepository: self.repositoriesDI.paymentRepository
+    );
+    
+    private(set) lazy var getLocation =  GetLocationUsecase(
+        paymentRepository: self.repositoriesDI.paymentRepository
+    );
+    
+    private(set) lazy var addLocation =  AddLocationUsecase(
+        paymentRepository: self.repositoriesDI.paymentRepository
+    );
 }

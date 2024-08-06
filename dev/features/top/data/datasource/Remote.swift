@@ -65,7 +65,13 @@ final class FoodDataSourceRemote : FoodDataSourceRemoteContract {
             queries: queries
         )
         
-        let data = try await self.networkContract.fetchConcurrency(type: MealListModel?.self, customUrl: formEndpoint.url, body: nil, method: "GET");
+        let data = try await self.networkContract.fetchConcurrency(
+            type: MealListModel?.self,
+            customUrl: formEndpoint.url,
+            headers: nil,
+            body: nil,
+            method: "GET"
+        );
         return data;
     }
     
@@ -79,7 +85,9 @@ final class FoodDataSourceRemote : FoodDataSourceRemoteContract {
             queries: queries
         )
         let data = try await self.networkContract.fetchConcurrency(
-            type: MealDetailListModel?.self, customUrl: formEndpoint.url,
+            type: MealDetailListModel?.self, 
+            customUrl: formEndpoint.url,
+            headers: nil,
             body: nil,
             method: "GET"
         );
@@ -99,6 +107,7 @@ final class FoodDataSourceRemote : FoodDataSourceRemoteContract {
         let data = try await self.networkContract.fetchConcurrency(
             type: MealDetailListModel?.self,
             customUrl: formEndpoint.url,
+            headers: nil,
             body: nil,
             method: "GET"
         );

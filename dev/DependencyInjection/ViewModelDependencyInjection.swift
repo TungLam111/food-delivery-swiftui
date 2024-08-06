@@ -58,23 +58,37 @@ final class ViewModelsDependencyInjector  {
         return ProfileViewModel(navigator: navigationCoordinator)
     }
     
-    
     func dishDetail(navigationCoordinator: NavigationCoordinator, args: DishDetailArgs) -> DishDetailViewModel {
         return DishDetailViewModel(
             navigator: navigationCoordinator,
             findMealDetailUsecase: usecasesDI.findMealDetail,
+            addToShoppingBasketUsecase: usecasesDI.addToShoppingBasket,
             shoppingCartLocalStorage: ShoppingCartLocalStorage(sharedPrefs: UserDefaults.standard),
+            findOneBasketUsecase: usecasesDI.getOneBasketUsecase,
             argument: args
         )
     }
     
     func checkout(navigationCoordinator: NavigationCoordinator) -> CheckoutViewModel{
-        return CheckoutViewModel(navigator: navigationCoordinator)
+        return CheckoutViewModel(
+            navigator: navigationCoordinator,
+            getPaymentMethodsUsecase: usecasesDI.getPaymentMethod,
+            getPaymentCardsUsecase: usecasesDI.getPaymentCards,
+            addPaymentCardUsecase: usecasesDI.addPaymentCard,
+            payCompleteUsecase: usecasesDI.payComplete,
+            removePaymentCardUsecase: usecasesDI.removePaymentCard,
+            getLocationsUsecase: usecasesDI.getLocation,
+            addLocationUsecase: usecasesDI.addLocation
+        )
     }
     
     func shoppingCart(navigationCoordinator: NavigationCoordinator) -> ShoppingCartViewModel{
-        return ShoppingCartViewModel(navigator: navigationCoordinator,
-                                     shoppingCartLocalStorage: ShoppingCartLocalStorage(sharedPrefs: UserDefaults.standard)
+        return ShoppingCartViewModel(
+            navigator: navigationCoordinator,
+                                     shoppingCartLocalStorage: ShoppingCartLocalStorage(sharedPrefs: UserDefaults.standard),
+            getBasketListUsecase: self.usecasesDI.getBasketListUsecase,
+            updateBasketUsecase: self.usecasesDI.updateShoppingBasket,
+            deleteBasketUsecase: self.usecasesDI.deleteBasketUsecase
         )
     }
     
@@ -82,7 +96,8 @@ final class ViewModelsDependencyInjector  {
         return LoginViewModel(
             navigator: navigationCoordinator,
             argument: nil,
-            loginUsecase: self.usecasesDI.loginUsecase
+            loginUsecase: self.usecasesDI.loginUsecase,
+            authenLocalStorage: AuthenticationLocalStorage(defaults: UserDefaults.standard)
         )
     }
     

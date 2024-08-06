@@ -14,10 +14,10 @@ final class DependencyInjector {
     
     static let instance = DependencyInjector()
     private init() {}
-        
+    
     private(set) lazy var networkService : NetworkServiceContract = NetworkService();
     
-    private(set) lazy var datasourcesDI = DatasoucesDependencyInjection(networkService: networkService)
+    private(set) lazy var datasourcesDI = DatasoucesDependencyInjection(networkService: networkService, authorizationLocalStorage: AuthenticationLocalStorage(defaults: UserDefaults.standard))
     
     private(set) lazy var repositoriesDI = RepositoriesDependencyInjection(datasourcesDI: datasourcesDI)
     

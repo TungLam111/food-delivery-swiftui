@@ -1,6 +1,6 @@
 import SwiftUI
 
-struct SearchBar: View {
+struct SearchBarView: View {
     var onTap: () -> Void
     
     @State private var searchText = ""
@@ -11,14 +11,19 @@ struct SearchBar: View {
                 .foregroundColor(.gray)
                 .padding(.leading, 20)
             
-            TextField("Search", text: $searchText)
+            TextField("Search for anything", text: $searchText)
+                .font(.custom(FontConstants.defautFont, size: 15))
+                .fontWeight(.medium)
                 .padding(.vertical, 20)
                 .padding(.horizontal, 10)
                 .disabled(true)
+            
+            Image(systemName: "mic")
+                .foregroundColor(.gray)
+                .padding(.trailing, 20)
         }
         .background(ColorConstants.cFFEFEEEE)
-        .cornerRadius(30)
-        .padding(.horizontal, 50)
+        .cornerRadius(10)
         .onTapGesture {
             onTap();
         }

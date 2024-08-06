@@ -11,7 +11,7 @@ struct CheckoutView: View {
     @StateObject var viewModel: CheckoutViewModel;
     
     var body: some View {
-        ZStack {
+        ZStack (alignment: .bottom) {
             VStack(
                 alignment: .leading
             ){
@@ -19,84 +19,141 @@ struct CheckoutView: View {
                     VStack(
                         alignment: .leading
                     ) {
-                        CustomAppBar(
-                            leadingAction: viewModel.onBack,
-                            trailingAction: {},
-                            titleCenter: "Checkout"
+                        HStack {
+                            Image(systemName: "chevron.left")
+                                .foregroundColor(.white)
+                                .font(.system(size: 20))
+                                .onTapGesture {
+                                    viewModel.onBack()
+                                }
                             
-                        )
-                        
-                        Spacer().frame(height: 50)
-                        
-                        viewModel.checkoutPhase == "delivery" ?
-                        Text("Delivery")
-                            .font(.custom(FontConstants.defautFont, size: CGFloat(40)))
-                        :
-                        Text("Payment")
-                            .font(.custom(FontConstants.defautFont, size: CGFloat(40)))
-                        
-                        Spacer().frame(height: 20)
-                        
-                        if viewModel.checkoutPhase == "delivery" {
-                            TitleAndInformationView(
-                                title: "Address details",
-                                content: AddressDetalInfo(
-                                    imageName: "user_avatar",
-                                    name: "Phan Dam Tung Lam",
-                                    phoneNumber: "(+84) 829976232",
-                                    address: "10 Phan Ke Binh"
-                                )
-                            )
-                        } else {
-                            TitleAndInformationView(
-                                title: "Payment method",
-                                content: PaymentMethodSelection()
-                            )
+                            Spacer()
+                            
+                            Text("Checkout")
+                                .font(.custom(FontConstants.defautFont, size: 20))
+                                .fontWeight(.medium)
+                                .foregroundColor(.white)
+                            
+                            Spacer()
                         }
+                        .padding(.vertical, 10)
+                        .padding(.horizontal, 10)
+                        .background(ColorConstants.cFF2E2E2D)
+                        .cornerRadius(10)
                         
                         Spacer().frame(height: 20)
                         
                         TitleAndInformationView(
-                            title: "Delivery method",
-                            content: DeliveryMethodView()
+                            title: "Payment Details",
+                            trailingIcon: TrailingEditIconView(
+                                onTap: {
+                                    
+                                }),
+                            content: CardManagementView(
+                                cards: $viewModel.paymentCards,
+                                addCard: viewModel
+                                    .addCard
+                            )
+                        ).frame(maxWidth: .infinity)
+                        
+                        TitleAndInformationView(
+                            title: "Shipping Information",
+                            trailingIcon: TrailingEditIconView(
+                                onTap: {
+                                    
+                                }),
+                            content: AddressView(
+                                addresses: $viewModel.addresses,
+                                addAddress: viewModel.addAddress
+                            )
                         )
                         
-                        Spacer()
+                        TitleAndInformationView(
+                            title: "Promocode",
+                            trailingIcon: TrailingEditIconView(
+                                onTap: {
+                                    
+                                }),
+                            content: VStack(
+                                content: {
+                                    HStack {
+                                        TextField("Enter your promocode", text: $viewModel.promocode)
+                                            .font(.custom(FontConstants.defautFont, size: 17))
+                                            .fontWeight(.medium)
+                                            .fontWeight(.bold)
+                                            .foregroundColor(ColorConstants.cFF000000)
+                                            .padding(.vertical, 10)
+                                            .accentColor(.black)
+                                        
+                                        Image(systemName: "person")
+                                            .foregroundColor(.gray)
+                                    }
+                                    .padding(.vertical, 5)
+                                    .padding(.horizontal, 15)
+                                    .background(Color(.systemGray6))
+                                    .cornerRadius(10)
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .stroke(Color.gray, lineWidth: 1)
+                                    )
+                                    
+                                    HStack {
+                                        Image(systemName: "exclamationmark.triangle")
+                                            .foregroundColor(.gray)
+                                        
+                                        Text("The promo discount will be applied to card total sum")
+                                            .font(.custom(FontConstants.defautFont, size: 15))
+                                            .fontWeight(.medium)
+                                        
+                                    }
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                    .padding(.vertical, 5)
+                                    
+                                })
+                        )
+                        
+                        Spacer().frame(height: 200)
                     }
                     
                 }.frame(
                     maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 30)
-                
-                HStack() {
-                    Text("Total")
-                        .font(.custom(FontConstants.defautFont, size: 17))
-                        .fontWeight(Font.Weight.regular)
-                    
-                    Spacer()
-                    Text("23.000")
-                        .font(.custom(FontConstants.defautFont, size: 22))
-                        .fontWeight(Font.Weight.bold)
-                }
-                .padding(.horizontal, 30)
-                
-                Spacer().frame(height: 20)
-                
-                // Action button
-                AppActionButton(
-                    action: {
-                        viewModel.processToPayment()
-                    }, text: "Proceed to payment"
-                )
-                .padding(.horizontal, 30)
-                .padding(.bottom, 40)
-                .padding(.top, 10)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             .padding(.top, 60)
-            .background(ColorConstants.cFFF6F6F9)
+            .background(ColorConstants.cFFF2F2F2)
             .navigationBarBackButtonHidden()
             .ignoresSafeArea()
+            
+            VStack {
+                HStack {
+                    Text("Total")
+                        .font(.custom(FontConstants.defautFont, size: 25))
+                        .fontWeight(.medium)
+                        .foregroundColor(.white)
+                    
+                    Spacer()
+                    
+                    Text("$100")
+                        .font(.custom(FontConstants.defautFont, size: 25))
+                        .fontWeight(.medium)
+                        .foregroundColor(.white)
+                }.padding(.horizontal, 20)
+                    .padding(.top, 10)
+                
+                AppActionButton(
+                    action: {
+                        viewModel.processToPayment()
+                    },
+                    text: "Pay",
+                    backgroundColor: ColorConstants.cFF267860
+                )
+                .padding(.bottom, 20)
+                .padding(.horizontal, 20)
+                .cornerRadius(20)
+            }
+            .background(ColorConstants.cFF2E2E2D)
+            .frame(maxWidth: .infinity)
             
             if viewModel.isAllowToShow {
                 CustomDialogView(
@@ -115,19 +172,20 @@ struct CheckoutView: View {
                     }
                     .zIndex(1) // Ensure the background overlay is below the bottom sheet
                 
-                BottomSheetView(isPresented: $viewModel.showBottomSheet)
+                PaymentBottomSheetView(
+                    isPresented: $viewModel.showBottomSheet,
+                    confirmPay: viewModel.confirmPay
+                )
                     .transition(.move(edge: .bottom))
-                    .zIndex(2) // Ensure the bottom sheet is on top
+                    .zIndex(2)
             }
         }
     }
 }
 
 #Preview {
-    ProfileView(
-        viewModel: ProfileViewModel(
-            navigator: MockNavigationCoordinator()
-        )
+    CheckoutView(
+        viewModel: DependencyInjector.instance.viewModelsDI.checkout(navigationCoordinator: RootViewModel())
     )
 }
 

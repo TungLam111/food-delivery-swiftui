@@ -23,7 +23,7 @@ class FoodRepositoryImpl : FoodRepository {
             let meals : MealDetailListModel? = try await self.remoteDataSource.searchMealsByName(by: name)
             return meals;
         } catch {
-            print("Error fetching categories: \(error)")
+            print("Error fetching meals by category: \(error)")
             return nil;
         }
     }
@@ -38,7 +38,7 @@ class FoodRepositoryImpl : FoodRepository {
             let meals : MealListModel? = try await self.remoteDataSource.getFoodByCategoryAsync( categoryName: category)
             return meals;
         } catch {
-            print("Error fetching categories: \(error)")
+            print("Error fetching foods: \(error)")
             return nil;
         }
     }
@@ -52,7 +52,7 @@ class FoodRepositoryImpl : FoodRepository {
             let meals : MealDetailListModel? = try await self.remoteDataSource.getMealDetail(dishId: id)
             return meals;
         } catch {
-            print("Error fetching categories: \(error)")
+            print("Error fetching food: \(error)")
             return nil;
         }
     }

@@ -1,46 +1,24 @@
 import SwiftUI
 
-struct ScrollingImageCarousel: View {
+struct ScrollingImageCarousel<Content: View>: View {
     @Binding var currentPage: Int
-    let imageUrls: [String];
+    let data: [Any];
     var onChange : (Int) -> Void;
-    
-    let carouselHeight: CGFloat = 300 // Set your desired height here
+    var itemCount: Int;
+    var itemBuilder: (Int) -> Content;
+    var carouselHeight: CGFloat;
 
     var body: some View {
         VStack {
             GeometryReader { geometry in
                     HStack(spacing: 0) {
-                        ForEach(imageUrls.indices, id: \.self) { index in
-                            let imageUrl = imageUrls[index]
-                            if imageUrl.starts(with: "https") {
-                                AsyncImage(url: URL(string: imageUrl)) { phase in
-                                    switch phase {
-                                    case .empty:
-                                        ProgressView()
-                                            .frame(width: geometry.size.width, height: carouselHeight)
-                                    case .success(let image):
-                                        image
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fill)
-                                            .frame(width: geometry.size.width, height: carouselHeight)
-                                            .clipShape(Circle())
-                                    case .failure:
-                                        Image(systemName: "photo")
-                                            .resizable()
-                                            .aspectRatio(contentMode: .fill)
-                                            .frame(width: geometry.size.width, height: carouselHeight)
-                                            .clipShape(Circle())
-                                    @unknown default:
-                                        EmptyView()
-                                    }
-                                }
-                            } else {
-                                Image(imageUrl)
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: geometry.size.width, height: carouselHeight)
-                            }
+                        ForEach(data.indices, id: \.self) { index in
+                            itemBuilder(index)
+                               .tag(index)
+                               .frame(
+                                width: geometry.size.width,
+                                height: carouselHeight
+                            )
                         }
                     }
                     .frame(width: geometry.size.width, height: carouselHeight, alignment: .leading)
@@ -58,7 +36,7 @@ struct ScrollingImageCarousel: View {
                                         onChange(self.currentPage)
                                     }
                                 } else if (offset < -10) {
-                                    if (self.currentPage < imageUrls.count - 1 ) {
+                                    if (self.currentPage < itemCount - 1 ) {
                                         withAnimation {
                                             self.currentPage += 1
                                         }
@@ -74,13 +52,13 @@ struct ScrollingImageCarousel: View {
                 }
             }.frame(height: carouselHeight)
             
-            Spacer()
+            Spacer().frame(height: 20)
             
             HStack(alignment: .center, spacing: 10) {
-                ForEach(imageUrls.indices, id: \.self) { index in
+                ForEach(data.indices, id: \.self) { index in
                     if (index == currentPage) {
                          Capsule()
-                            .fill(ColorConstants.cFF267860)
+                            .fill(ColorConstants.cFF000000)
                             .frame(width: 40, height: 10)
                     } else {
                          Circle()

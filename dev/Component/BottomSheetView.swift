@@ -8,8 +8,9 @@
 import Foundation
 import SwiftUI
 
-struct BottomSheetView: View {
+struct PaymentBottomSheetView: View {
     @Binding var isPresented: Bool
+    var confirmPay: () -> Void;
     
     var body: some View {
         GeometryReader { geometry in
@@ -65,7 +66,7 @@ struct BottomSheetView: View {
                         }
                         
                         Button(action: {
-                            // Add your action here
+                            confirmPay()
                         }) {
                             Text("Proceed")
                                 .frame(maxWidth: .infinity)

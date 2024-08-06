@@ -11,20 +11,28 @@ struct DeliveryMethodView: View {
     @State private var selectedOption: UUID?
     
     let deliveryOptions = [
-        DeliveryOption(iconName: "creditcard", name: "Door delivery", color: .red),
-        DeliveryOption(iconName: "banknote", name: "Pick-up", color: .orange)
+        DeliveryOption(
+            iconName: "creditcard",
+            name: "Credicard",
+            color: ColorConstants.cFF267860
+        ),
+        DeliveryOption(
+            iconName: "banknote",
+            name: "Cash On Delivery",
+            color: ColorConstants.cFF267860
+        )
     ]
     
     var body: some View {
-        VStack (alignment: .leading) {
-            ForEach(deliveryOptions) { option in
-                DeliveryOptionView(
-                    option: option,
-                    isSelected: option.id == selectedOption,
-                    isLastOption: option.id == deliveryOptions.last?.id
-                )
+        HStack (alignment: .center) {
+            ForEach(deliveryOptions.indices,  id: \.self) { idx in
+                    DeliveryOptionView(
+                        option: deliveryOptions[idx],
+                        isSelected: deliveryOptions[idx].id == selectedOption,
+                        isLastOption: deliveryOptions[idx].id == deliveryOptions.last?.id
+                    )
                 .onTapGesture {
-                    selectedOption = option.id
+                    selectedOption = deliveryOptions[idx].id
                 }
             }
         }
@@ -37,26 +45,28 @@ struct DeliveryOptionView: View {
     let isLastOption: Bool
     
     var body: some View {
-        VStack {
-            HStack (alignment: .center, spacing: 15) {
+            HStack (spacing: 10) {
                 RadioButton(isSelected: isSelected , color: option.color)
                 
-                Image(systemName: option.iconName)
-                    .resizable()
-                    .frame(width: 24, height: 24)
-                    .foregroundColor(.white)
-                    .background(option.color)
-                    .cornerRadius(6)
-                
                 Text(option.name)
-                    .font(.headline)
+                    .font(.custom(FontConstants.defautFont, size: 18))
                     .foregroundColor(.black)
-                
-                Spacer()
-            }.padding(.vertical, 15)
-            
-            isLastOption ? nil : Divider().frame(height: 1)
+                    .fontWeight(.medium)
+            }.padding(.bottom, 15)
+            .padding(.trailing, 10)
         }
+}
+
+struct TrailingEditIconView : View {
+    var onTap: () -> Void
+    
+    var body: some View {
+        Image(systemName: "pencil.and.outline")
+            .foregroundColor(.black)
+            .font(.system(size: 20))
+            .onTapGesture {
+                onTap()
+            }
     }
 }
 

@@ -26,6 +26,8 @@ struct ColorConstants {
     static let cFF9D724D = Color(hex: 0x9D724D); // main espresso
     static let cFF2E2E2D = Color(hex: 0x2E2E2D);
     static let cFFFAF8F5 = Color(hex: 0xFAF8F5);
+    static let cFF7D5A50 = Color(hex: 0x7D5A50);
+    static let cFF800000 = Color(hex: 0x800000);
 }
 
 struct StringConstants {
@@ -60,3 +62,4 @@ struct TextStyle {
         self.weight = weight
     }
 }
+

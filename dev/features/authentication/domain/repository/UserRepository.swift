@@ -1,10 +1,3 @@
-//
-//  UserRepository.swift
-//  dev
-//
-//  Created by phan dam tung lam on 25/7/24.
-//
-
 import Foundation
 
 protocol UserRepository {

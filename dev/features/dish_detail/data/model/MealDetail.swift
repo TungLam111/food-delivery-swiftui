@@ -56,8 +56,16 @@ class MealDetail: Codable, Hashable, Equatable, Identifiable {
     var strMeasure18: String?
     var strMeasure19: String?
     var strMeasure20: String?
+    var price: String?
+    var quantity: Int?
     
-    // Hashable and Equatable conformance
+   
+    func initPriceAndQuantity() -> MealDetail {
+        self.price = "19.99"
+        self.quantity = 1
+        return self;
+    }
+    
     func hash(into hasher: inout Hasher) {
         hasher.combine(idMeal)
     }
@@ -65,15 +73,57 @@ class MealDetail: Codable, Hashable, Equatable, Identifiable {
     static func ==(lhs: MealDetail, rhs: MealDetail) -> Bool {
         return lhs.idMeal == rhs.idMeal
     }
+    
+    enum CodingKeys: String, CodingKey {
+           case idMeal
+           case strMeal
+           case strDrinkAlternate
+           case strCategory
+           case strArea
+           case strInstructions
+           case strMealThumb
+           case strTags
+           case strYoutube
+           case strIngredient1
+           case strIngredient2
+           case strIngredient3
+           case strIngredient4
+           case strIngredient5
+           case strIngredient6
+           case strIngredient7
+           case strIngredient8
+           case strIngredient9
+           case strIngredient10
+           case strIngredient11
+           case strIngredient12
+           case strIngredient13
+           case strIngredient14
+           case strIngredient15
+           case strIngredient16
+           case strIngredient17
+           case strIngredient18
+           case strIngredient19
+           case strIngredient20
+           case strMeasure1
+           case strMeasure2
+           case strMeasure3
+           case strMeasure4
+           case strMeasure5
+           case strMeasure6
+           case strMeasure7
+           case strMeasure8
+           case strMeasure9
+           case strMeasure10
+           case strMeasure11
+           case strMeasure12
+           case strMeasure13
+           case strMeasure14
+           case strMeasure15
+           case strMeasure16
+           case strMeasure17
+           case strMeasure18
+           case strMeasure19
+           case strMeasure20
+       }
 }
 
-// Extended MealDetail to include price and quantity
-extension MealDetail {
-    var price: String {
-        return "$19.99" // Placeholder price, replace with actual logic
-    }
-
-    var quantity: Int {
-        return 1 // Placeholder quantity, replace with actual logic
-    }
-}

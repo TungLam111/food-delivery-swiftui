@@ -6,33 +6,32 @@
 //
 
 import SwiftUI
+import SwiftUI
 
-struct TitleAndInformationView<Content: View> : View {
-    var title: String;
+struct TitleAndInformationView<Content: View, TrailingIcon: View>: View {
+    var title: String
+    var trailingIcon: TrailingIcon? // Optional view for trailing icon
     var content: Content
     
     var body: some View {
-        VStack (alignment: .leading) {
-            Text(title)
-                .font(.headline)
-            
-            Spacer().frame(height: 15)
-            
-            HStack (alignment: .top) {
-                content
-                    .padding(.vertical, 20)
-                    .padding(.horizontal, 20)
+        VStack(alignment: .leading) {
+            HStack {
+                Text(title)
+                    .font(.custom(FontConstants.defautFont, size: 20))
+                    .fontWeight(.medium)
                 
                 Spacer()
+                
+                // Conditionally render trailing icon if it exists
+                if let icon = trailingIcon {
+                    icon
+                }
             }
-            .background(ColorConstants.cFFFFFFFF)
-            .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 5)
-            .cornerRadius(30)
-            .clipShape(RoundedRectangle(cornerRadius: 30))
+            
+            HStack(alignment: .top) {
+                content
+                    .padding(.bottom, 20)
+            }
         }
     }
-}
-
-#Preview {
-    TitleAndInformationView(title: "Tung Lam ", content: HStack{})
 }

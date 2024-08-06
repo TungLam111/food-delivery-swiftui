@@ -11,11 +11,42 @@ struct LandingView: View {
                 Spacer()
                 ScrollingImageCarousel(
                     currentPage: $viewModel.currentPage,
-                    imageUrls:
+                    data:
                         self.viewModel.landingData.map { $0.image },
                     onChange: { index in
                         self.viewModel.currentPage = index
-                    })
+                    },
+                    itemCount: self.viewModel.landingData.count,
+                    itemBuilder: { idx in
+                        let imageUrl = self.viewModel.landingData.map { $0.image }[idx]
+                        if imageUrl.starts(with: "https") {
+                            return AnyView(
+                                AsyncImage(url: URL(string: imageUrl)) { phase in
+                                    switch phase {
+                                    case .empty:
+                                        ProgressView()
+                                    case .success(let image):
+                                        image
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                            .clipShape(Circle())
+                                    case .failure:
+                                        Image(systemName: "photo")
+                                            .resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                            .clipShape(Circle())
+                                    @unknown default:
+                                        EmptyView()
+                                    }
+                                }
+                            )
+                        } else {
+                            return AnyView(Image(imageUrl)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit))
+                        }
+                    }, carouselHeight: 300
+                )
                 .frame(
                     maxWidth: .infinity, maxHeight: .infinity, alignment: .center
                 )

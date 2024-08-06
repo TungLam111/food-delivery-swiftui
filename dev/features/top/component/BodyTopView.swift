@@ -11,129 +11,64 @@ import URLImage
 struct BodyTopView: View {
     @Binding var currentTab: String
     @Binding var categories: [CategoryFoodModel]?
-    @Binding var mealsByCategory : [MealModel]?
+    @Binding var mealsByCategory : [MealDetail]?
     var onTapCategory: (String) -> Void
     var onTapDish: (String) -> Void
-    var onTapSearchField: () -> Void
     
     init(
         currentTab: Binding<String>,
         categories: Binding<[CategoryFoodModel]?>,
-        mealsByCategory: Binding<[MealModel]?>,
+        mealsByCategory: Binding<[MealDetail]?>,
         onTapCategory: @escaping (String) -> Void,
-        onTapDish: @escaping (String) -> Void,
-        onTapSearchField: @escaping () -> Void
+        onTapDish: @escaping (String) -> Void
     ) {
         self._currentTab = currentTab
         self._categories = categories
         self._mealsByCategory = mealsByCategory
         self.onTapCategory = onTapCategory
         self.onTapDish = onTapDish
-        self.onTapSearchField = onTapSearchField
     }
     
     var body: some View {
-        VStack {
-            SearchBar(
-                onTap: {
-                    onTapSearchField()
-                }
-            )
-            
-            Spacer().frame(height: 40)
-            
+        VStack {            
             ScrollView(.horizontal, showsIndicators: false) {
                 LazyHStack(spacing: 10) {
                     ForEach(categories ?? []) { item in
                         Text(item.strCategory)
                             .font(.custom(FontConstants.defautFont, size: 17))
+                            .fontWeight(.medium)
                             .padding()
-                            .foregroundColor(ColorConstants.cFFFA4A0C)
-                            .cornerRadius(10)
-                            .overlay(
-                                Rectangle()
-                                    .frame(height: currentTab == item.strCategory ? 3 : 0)
-                                    .foregroundColor(ColorConstants.cFFFA4A0C)
-                                    .padding(.top, 10),
-                                alignment: .bottom
+                            .foregroundColor(
+                                currentTab == item.strCategory ? .white : ColorConstants.cFF2E2E2D
                             )
+                            .background(
+                                currentTab == item.strCategory ? ColorConstants.cFF2E2E2D : .white
+                            )
+                            .cornerRadius(5)
+                            .shadow(radius: 2)
                             .onTapGesture {
                                 print("Tapped category: \(item.strCategory)")
                                 onTapCategory(item.strCategory)
                             }
                     }
                 }
-                .padding()
             }
+            .padding(.bottom, 20)
             
-            
-            ScrollView(.horizontal, showsIndicators: false) {
-                LazyHStack(spacing: 10) {
+            ScrollView(showsIndicators: false) {
+                LazyVGrid(
+                    columns: [GridItem(.flexible()), GridItem(.flexible())],
+                    spacing: 16
+                ) {
                     ForEach(mealsByCategory ?? []) { meal in
-                        ZStack (
-                        ) 
-                        {
-                            // Background dish
-                            VStack(alignment: .center, spacing: 0){
-                                Spacer().frame(height: 60)
-                                Text(meal.strMeal)
-                                    .font(.custom(FontConstants.defautFont,size: 22))
-                                    .lineLimit(2)
-                                    .fontWeight(/*@START_MENU_TOKEN@*/.bold/*@END_MENU_TOKEN@*/)
-                                    .padding()
-                                    .frame(alignment: .center)
-                                Text(String(meal.strMeal))
-                                    .font(.custom(FontConstants.defautFont, size: 17))
-                                    .fontWeight(.semibold)
-                                    .lineLimit(3)
-                                    .foregroundColor(ColorConstants.cFFFA4A0C)
-                                    .padding()
-                                    .frame(alignment: .center)
-                            }
-                            .frame(width: 220, height: 320)
-                            .background(ColorConstants.cFFFFFFFF)
-                            .cornerRadius(30)
-                            .shadow(radius: 3)
-                            
-                            // Image dish
-                            if let imageUrl = URL(string: meal.strMealThumb) {
-                                URLImage(imageUrl) { image in
-                                    image
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(width: 150, height: 150)
-                                        .clipShape(Circle())
-                                        .overlay(Circle().stroke(Color.white, lineWidth: 2))
-                                        .shadow(radius: 3)
-                                        .offset(x: 0, y: -110)
-                                }
-                            } else {
-                                Image(systemName: "photo")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                                    .frame(width: 150, height: 150)
-                                    .clipShape(Circle())
-                                    .overlay(Circle().stroke(Color.white, lineWidth: 2))
-                                    .shadow(radius: 3)
-                                    .offset(x: 0, y: -110)
-                            }
-                        }
-                        .frame(
-                            width : 220,
-                            height: 350
-                        )
-                        .onTapGesture {
-                            print("Tapped dish: \(meal.strMeal)")
-                            onTapDish(meal.idMeal)
-                        }
+                        CoffeeItemView(meal: meal, onTap: { value in
+                            onTapDish(value)
+                        } )
                         
                     }
                 }
-                .padding()
             }
             
-            
-            
-        }
+        }.padding(.horizontal, 16)
     }
 }

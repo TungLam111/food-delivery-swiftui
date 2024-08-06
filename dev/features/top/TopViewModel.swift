@@ -2,7 +2,15 @@ import Foundation
 import SwiftUI
 import Combine
 
-class TopViewModel: ObservableObject {
+struct CouponModel {
+    var name: String;
+    var timeStart: Date;
+    var timeEnd: Date;
+    var content: String;
+    var type: CouponType;
+}
+
+class TopViewModel: BaseViewModel {
     private let navigator: NavigationCoordinator;
     var findFoodByCategoryUsecase: FindFoodByCategoryUsecase;
     var findAllCategoriesUsecase: FindAllCategoriesUsecase;
@@ -10,8 +18,33 @@ class TopViewModel: ObservableObject {
     
     @Published var currentCategory : String = "Beef"
     @Published var categories: [CategoryFoodModel]? = []
-    @Published var mealsByCategory: [MealModel]? = []
-    @Published var cartItems: [CartItem] = []
+    @Published var mealsByCategory: [MealDetail]? = []
+    @Published var cartItems: [AddCartItem] = []
+    
+    @Published var currentCouponIndex = 0
+    @Published var couponList : [CouponModel] = [
+        CouponModel(
+            name: "For all Espresso",
+            timeStart: Date.now,
+            timeEnd: Date.now,
+            content: "Fee for all",
+            type: CouponType.sale
+        ),
+        CouponModel(
+            name: "Free Delivery",
+            timeStart: Date.now,
+            timeEnd: Date.now,
+            content: "Fee for all",
+            type: CouponType.freeShip
+        ),
+        CouponModel(
+            name: "For all Espresso",
+            timeStart: Date.now,
+            timeEnd: Date.now,
+            content: "Buy 1 Get 1 Extra Gift",
+            type: CouponType.gift
+        )
+    ]
     
     var cancellables = Set<AnyCancellable>()
     var isLoadingContent: CurrentValueSubject<Bool, Never> = .init(false)
@@ -22,10 +55,12 @@ class TopViewModel: ObservableObject {
         findFoodByCategoryUsecase: FindFoodByCategoryUsecase,
         shoppingCartLocalStorage: ShoppingCartLocalStorage
     ) {
+        
         self.navigator = navigator
         self.findAllCategoriesUsecase = findAllCategoriesUsecase
         self.findFoodByCategoryUsecase = findFoodByCategoryUsecase
         self.shoppingCartLocalStorage = shoppingCartLocalStorage
+        super.init()
         
         setup()
     }
@@ -57,12 +92,17 @@ class TopViewModel: ObservableObject {
         currentCategory = category;
         DispatchQueue.main.async{
             Task {
+                self.mainLoadingStatus.toggle()
                 do {
                     let data = try await self.findFoodByCategoryUsecase.execute(category: category)
-                    self.mealsByCategory = data?.meals;
+                    self.mealsByCategory = data?.meals?.map({ meal in
+                        return meal.initPriceAndQuantity()
+                    });
+                    self.mainLoadingStatus.toggle()
                 } catch {
                     // Handle error if needed
                     print("Error fetching meals: \(error)")
+                    self.mainLoadingStatus.toggle()
                 }
             }
         }
@@ -81,7 +121,7 @@ class TopViewModel: ObservableObject {
     func navToMealDetail(dishId: String) {
         self.navigator.push(RootViewModel.Destination.dishDetail(
             vm:
-                DependencyInjector.instance.viewModelsDI.dishDetail(navigationCoordinator: self.navigator, args: DishDetailArgs(id: dishId))
+                DependencyInjector.instance.viewModelsDI.dishDetail(navigationCoordinator: self.navigator, args: DishDetailArgs(id: dishId, basketId: nil))
         ))
     }
     
