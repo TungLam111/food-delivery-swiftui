@@ -23,6 +23,23 @@ enum CouponType {
     case gift
 }
 
+enum OrderType {
+    case ship
+    case take_away
+    case reserve
+    
+    var string: String {
+        switch self {
+        case .ship:
+            return "ship"
+        case .take_away:
+            return "take_away"
+        default:
+            return "reserve"
+        }
+    }
+}
+
 
 enum CardType {
     case visa, mastercard, amex, discover
@@ -62,3 +79,4 @@ enum CardType {
         }
     }
 }
+

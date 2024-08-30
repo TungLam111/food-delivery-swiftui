@@ -14,9 +14,7 @@ protocol BasketRepository {
     
     func updateBasket(basket: UpdateBasketItem) async throws -> DataState<BasketItemResponse?>
     
-    
     func getAll() async throws -> DataState<BasketListResponse?>
-    
     
     func getOne(basketId: String) async throws -> DataState<BasketItemResponse?>
 }

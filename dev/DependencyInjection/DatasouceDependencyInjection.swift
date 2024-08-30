@@ -41,4 +41,9 @@ class DatasoucesDependencyInjection {
         networkContract: self.networkService,
         authenticationLocalStorage: self.authorizationLocalStorage
     )
+    
+    private(set) lazy var orderDataSourceRemoteContract = OrderDataSourceRemote(
+        networkContract: self.networkService,
+        authenticationLocalStorage: self.authorizationLocalStorage
+    )
 }

@@ -8,6 +8,41 @@
 import Foundation
 
 class PaymentRepositoryImpl : PaymentRepository {
+    
+    func verifyOrder(req: VerifyOrderDto) async throws -> DataState<VerifyOrderResponseModel?> {
+            do {
+                let response = try await self.remoteDataSource.verifyCoupon(req: req)
+                if response?.hasError == true {
+                    return DataFailed(error: ErrorException(
+                        errorCode: response?.errorCode,
+                        message: response?.message
+                    ))
+                }
+                return DataSuccess(data: response?.appData);
+            } catch FetchConcurrencyError.apiError(let errorCode, let message) {
+                return DataFailed(error: ErrorException(
+                    errorCode: errorCode,
+                    message: message
+                )
+                );
+            } catch FetchConcurrencyError.invalidURL {
+                print("Invalid URL")
+                return DataFailed(error: ErrorException());
+            } catch FetchConcurrencyError.networkError(let networkError) {
+                print("Network error occurred: \(networkError)")
+                return DataFailed(error: ErrorException());
+            } catch FetchConcurrencyError.decodingError(let decodingError) {
+                print("Failed to decode response: \(decodingError)")
+                return DataFailed(error: ErrorException());
+            } catch FetchConcurrencyError.invalidResponse {
+                print("Invalid response from server")
+                return DataFailed(error: ErrorException());
+            } catch {
+                print("An unexpected error occurred: \(error)")
+                return DataFailed(error: ErrorException());
+            }
+    }
+    
     func addLocation(dto: AddLocationDto) async throws -> DataState<LocationResponseModel?> {
         do {
             let response = try await self.remoteDataSource.addLocation(dto: dto)
@@ -184,7 +219,7 @@ class PaymentRepositoryImpl : PaymentRepository {
         }
     }
     
-    func pay(dto: PayDto) async throws -> DataState<PayCompleteResponseModel?> {
+    func pay(dto: PayDto) async throws -> DataState<OrderResponseModel?> {
         do {
             let response = try await self.remoteDataSource.pay(dto: dto)
             if response?.hasError == true {
@@ -252,5 +287,37 @@ class PaymentRepositoryImpl : PaymentRepository {
         }
     }
     
-    
+    func getAllCoupon() async throws -> DataState<[Coupon]?> {
+        do {
+            let response = try await self.remoteDataSource.getAllCoupons()
+            if response?.hasError == true {
+                return DataFailed(error: ErrorException(
+                    errorCode: response?.errorCode,
+                    message: response?.message
+                ))
+            }
+            return DataSuccess(data: response?.appData);
+        } catch FetchConcurrencyError.apiError(let errorCode, let message) {
+            return DataFailed(error: ErrorException(
+                errorCode: errorCode,
+                message: message
+            )
+            );
+        } catch FetchConcurrencyError.invalidURL {
+            print("Invalid URL")
+            return DataFailed(error: ErrorException());
+        } catch FetchConcurrencyError.networkError(let networkError) {
+            print("Network error occurred: \(networkError)")
+            return DataFailed(error: ErrorException());
+        } catch FetchConcurrencyError.decodingError(let decodingError) {
+            print("Failed to decode response: \(decodingError)")
+            return DataFailed(error: ErrorException());
+        } catch FetchConcurrencyError.invalidResponse {
+            print("Invalid response from server")
+            return DataFailed(error: ErrorException());
+        } catch {
+            print("An unexpected error occurred: \(error)")
+            return DataFailed(error: ErrorException());
+        }
+    }
 }

@@ -44,11 +44,11 @@ class ShoppingCartViewModel: BaseViewModel {
                     
                     if result.isSuccess {
                         self.cartItems = result.data??.results ?? []
+                        print(self.cartItems.count)
                         self.basketPricingData = BasketPricingData(
-                            foodPrice: result.data??.foodPrice ?? 0,
-                            totalPrice: result.data??.totalPrice ?? 0,
-                            deliveryPrice: result.data??.deliveryPrice ?? 0
+                            foodPrice: result.data??.foodPrice ?? 0
                         )
+                        
                     }
                     self.mainLoadingStatus.toggle()
                 } catch {
@@ -62,10 +62,8 @@ class ShoppingCartViewModel: BaseViewModel {
             let result : DataState<BasketListResponse?> = try await self.getBasketListUsecase.execute()
             
             if result.isSuccess {
-                return (result.data??.results ?? [],BasketPricingData(
-                    foodPrice: result.data??.foodPrice ?? 0,
-                    totalPrice: result.data??.totalPrice ?? 0,
-                    deliveryPrice: result.data??.deliveryPrice ?? 0
+                return (result.data??.results ?? [], BasketPricingData(
+                    foodPrice: result.data??.foodPrice ?? 0
                 ) )
             }
         

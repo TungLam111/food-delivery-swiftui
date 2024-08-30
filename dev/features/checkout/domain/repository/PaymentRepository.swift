@@ -11,8 +11,9 @@ protocol PaymentRepository {
     func getPaymentMethods() async throws -> DataState<[PaymentMethodResponseModel]?>
     func getPaymentCards() async throws -> DataState<[PaymentCardResponseModel]?>
     func addPaymentCard(dto: AddPaymentCardDto) async throws -> DataState<PaymentCardResponseModel?>
-    func pay(dto: PayDto) async throws -> DataState<PayCompleteResponseModel?>
     func removePaymentCard(cardId: String) async throws -> DataState<PaymentCardResponseModel?>
     func getLocations() async throws -> DataState<[LocationResponseModel]?>
     func addLocation(dto: AddLocationDto) async throws -> DataState<LocationResponseModel?>
+    func getAllCoupon() async throws -> DataState<[Coupon]?>
+    func verifyOrder(req: VerifyOrderDto) async throws -> DataState<VerifyOrderResponseModel?>;
 }

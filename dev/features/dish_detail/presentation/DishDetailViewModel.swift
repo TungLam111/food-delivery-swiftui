@@ -95,7 +95,7 @@ class DishDetailViewModel: ObservableObject {
                         let result: DataState<BasketItemResponse?> = try await self.addToShoppingBasketUsecase.execute(
                             basket: AddCartItem(
                             mealId: self.mealDetail!.idMeal!,
-                            price: self.mealDetail!.price!,
+                            price: Double(self.mealDetail!.price!) ?? 0,
                             quantity: self.mealDetail!.quantity!,
                             topping: self.toppingSelection,
                             mealName: self.mealDetail?.strMeal ?? "",

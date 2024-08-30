@@ -10,14 +10,14 @@ import Foundation
 // Request model for shopping basket
 class AddCartItem: Identifiable, Codable {
     var mealId : String
-    var price: String
+    var price: Double
     var quantity: Int
     var topping: [String: Int]
     var mealName: String;
     var mealCategory: String;
     var mealImage: String;
     
-    init(mealId: String, price: String, quantity: Int, topping: [String : Int],
+    init(mealId: String, price: Double, quantity: Int, topping: [String : Int],
          mealName: String,
          mealCategory: String,
          mealImage: String
@@ -44,22 +44,13 @@ class AddCartItem: Identifiable, Codable {
         case mealName
         case mealCategory
     }
-    
-    func toMap() -> [String: Any] {
-        var dict = [String: Any]()
-        dict["mealId"] = self.mealId
-        dict["price"] = self.price
-        dict["quantity"] = self.quantity
-        dict["topping"] = self.topping
-        return dict
-    }
 }
 
 // Request model for shopping basket
 class UpdateBasketItem: Identifiable, Codable {
     var id: String
     var mealId : String
-    var price: String
+    var price: Double
     var quantity: Int
     var topping: [String: Int]
     var userId: String;
@@ -67,7 +58,7 @@ class UpdateBasketItem: Identifiable, Codable {
     var mealCategory: String;
     var mealImage: String;
     
-    init(id: String, mealId: String, price: String, quantity: Int, topping: [String : Int]
+    init(id: String, mealId: String, price: Double, quantity: Int, topping: [String : Int]
          ,
          userId: String,
          mealName: String,
@@ -105,22 +96,16 @@ class UpdateBasketItem: Identifiable, Codable {
 struct BasketListResponse: Codable, Hashable {
     let results: [BasketItemResponse]?
     let foodPrice: Double
-    let totalPrice: Double
-    let deliveryPrice: Double
     
     enum CodingKeys: String, CodingKey {
         case results
         case foodPrice
-        case totalPrice
-        case deliveryPrice
     }
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.results = try container.decodeIfPresent([BasketItemResponse].self, forKey: .results) ?? []
-        self.deliveryPrice = try container.decode(Double.self, forKey: .deliveryPrice)
         self.foodPrice = try container.decode(Double.self, forKey: .foodPrice)
-        self.totalPrice = try container.decode(Double.self, forKey: .totalPrice)
     }
 }
 
@@ -129,7 +114,7 @@ struct BasketListResponse: Codable, Hashable {
 class BasketItemResponse: Identifiable, Codable, Hashable, Equatable {
     var id: String
     var mealId : String
-    var price: String
+    var price: Double
     var quantity: Int
     var topping: [String: Int]
     var userId: String;
@@ -163,19 +148,13 @@ class BasketItemResponse: Identifiable, Codable, Hashable, Equatable {
 
 class BasketPricingData: Codable {
     let foodPrice: Double
-    let totalPrice: Double
-    let deliveryPrice: Double
     
     enum CodingKeys: String, CodingKey {
         case foodPrice
-        case totalPrice
-        case deliveryPrice
     }
     
-    init(foodPrice: Double, totalPrice: Double, deliveryPrice: Double) {
+    init(foodPrice: Double) {
         self.foodPrice = foodPrice
-        self.totalPrice = totalPrice
-        self.deliveryPrice = deliveryPrice
     }
 }
 

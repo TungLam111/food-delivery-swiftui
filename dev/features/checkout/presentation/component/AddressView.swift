@@ -12,7 +12,8 @@ import SwiftUI
 struct AddressView: View {
     @Binding var addresses: [LocationResponseModel]
     var addAddress: () -> Void;
-
+    var onSelectAddress: (Int) -> Void;
+    
     @State private var selectedAddressIndex : Int?
     
     var body: some View {
@@ -43,6 +44,9 @@ struct AddressView: View {
                 .background(Color.white)
                 .cornerRadius(10)
                 .shadow(radius: 1)
+                .onTapGesture {
+                    onSelectAddress(index)
+                }
             }
             
             Button(action: addAddress) {

@@ -24,6 +24,8 @@ final class RootViewModel: ObservableObject, Identifiable {
         case shoppingCart(vm: ShoppingCartViewModel)
         case login(vm: LoginViewModel)
         case signup(vm: SignupViewModel)
+        case coupon(vm: CouponViewModel)
+        case chat(vm: ConversationViewModel)
         
         func hash(into hasher: inout Hasher) {
             var index = 0
@@ -52,6 +54,10 @@ final class RootViewModel: ObservableObject, Identifiable {
                 index = 10
             case .signup:
                 index = 11
+            case .coupon:
+                index = 12
+            case .chat:
+                index = 13
             }
             hasher.combine(index)
         }
@@ -75,17 +81,17 @@ final class RootViewModel: ObservableObject, Identifiable {
         .init(navigator: self)
     }()
         
-    func navigate(to destination: Destination) {
-        navPath.append(destination)
-    }
-    
-    func navigateBack() {
-        navPath.removeLast()
-    }
-    
-    func navigateToRoot() {
-        navPath.removeLast(navPath.count)
-    }
+//    func navigate(to destination: Destination) {
+//        navPath.append(destination)
+//    }
+//    
+//    func navigateBack() {
+//        navPath.removeLast()
+//    }
+//    
+//    func navigateToRoot() {
+//        navPath.removeLast(navPath.count)
+//    }
 }
 
 

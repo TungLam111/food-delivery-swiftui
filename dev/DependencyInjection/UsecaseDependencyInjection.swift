@@ -74,7 +74,7 @@ class UsecasesDependencyInjection {
     );
     
     private(set) lazy var payComplete =  PaymentCompleteUsecase(
-        paymentRepository: self.repositoriesDI.paymentRepository
+        orderRepository: self.repositoriesDI.orderRepository
     );
     
     private(set) lazy var getLocation =  GetLocationUsecase(
@@ -82,6 +82,14 @@ class UsecasesDependencyInjection {
     );
     
     private(set) lazy var addLocation =  AddLocationUsecase(
+        paymentRepository: self.repositoriesDI.paymentRepository
+    );
+    
+    private(set) lazy var getListCoupon =  GetListCouponUsecase(
+        paymentRepository: self.repositoriesDI.paymentRepository
+    );
+    
+    private(set) lazy var verifyOrder =  VerifyOrderUsecase(
         paymentRepository: self.repositoriesDI.paymentRepository
     );
 }

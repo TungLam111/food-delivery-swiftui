@@ -8,13 +8,13 @@
 import Foundation
 
 class PaymentCompleteUsecase {
-    private var paymentRepository : PaymentRepository;
+    private var orderRepository : OrderRepository;
     
-    init(paymentRepository: PaymentRepository) {
-        self.paymentRepository = paymentRepository
+    init(orderRepository: OrderRepository) {
+        self.orderRepository = orderRepository
     }
     
-    func execute(dto: PayDto) async throws -> DataState<PayCompleteResponseModel?> {
-        return try await self.paymentRepository.pay(dto: dto)
+    func execute(dto: PayDto) async throws -> DataState<OrderResponseModel?> {
+        return try await self.orderRepository.createOrder(dto: dto)
     }
 }

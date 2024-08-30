@@ -70,7 +70,7 @@ struct ShoppingCartView: View {
                     .listStyle(PlainListStyle())
                     .background(Color.clear)
                     
-                    Spacer().frame(height: 300)
+                    Spacer().frame(height: 200)
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
                 .padding(.top, 60)
@@ -91,36 +91,6 @@ struct ShoppingCartView: View {
                         Spacer()
                         
                         Text("$\(String(viewModel.basketPricingData?.foodPrice ?? 0))")
-                            .font(.custom(FontConstants.defautFont, size: 25))
-                            .fontWeight(.medium)
-                            .foregroundColor(.white)
-                    }.padding(.horizontal, 20)
-                        .padding(.top, 10)
-                    
-                    HStack {
-                        Text("Delivery")
-                            .font(.custom(FontConstants.defautFont, size: 25))
-                            .fontWeight(.medium)
-                            .foregroundColor(.white)
-                        
-                        Spacer()
-                        
-                        Text("$\(String(viewModel.basketPricingData?.deliveryPrice ?? 0))")
-                            .font(.custom(FontConstants.defautFont, size: 25))
-                            .fontWeight(.medium)
-                            .foregroundColor(.white)
-                    }.padding(.horizontal, 20)
-                        .padding(.top, 10)
-                    
-                    HStack {
-                        Text("Total to pay")
-                            .font(.custom(FontConstants.defautFont, size: 25))
-                            .fontWeight(.medium)
-                            .foregroundColor(.white)
-                        
-                        Spacer()
-                        
-                        Text("$\(String(viewModel.basketPricingData?.totalPrice ?? 0))")
                             .font(.custom(FontConstants.defautFont, size: 25))
                             .fontWeight(.medium)
                             .foregroundColor(.white)
@@ -154,31 +124,7 @@ struct ShoppingCartView: View {
 
 #Preview {
     ShoppingCartView(
-        viewModel: ShoppingCartViewModel(
-            navigator: MockNavigationCoordinator(),
-            shoppingCartLocalStorage: ShoppingCartLocalStorage(sharedPrefs: UserDefaults.standard),
-            getBasketListUsecase: GetBasketListUsecase(basketRepository: BasketRepositoryImpl(
-                remoteDataSource: BasketDataSourceRemote(
-                    networkContract: NetworkService(),
-                    authenticationLocalStorage: AuthenticationLocalStorage(defaults: UserDefaults.standard)
-                ),
-                localDataSource: BasketDataSourceLocal()
-            )),
-            updateBasketUsecase: UpdateBasketUsecase(basketRepository: BasketRepositoryImpl(
-                remoteDataSource: BasketDataSourceRemote(
-                    networkContract: NetworkService(),
-                    authenticationLocalStorage: AuthenticationLocalStorage(defaults: UserDefaults.standard)
-                ),
-                localDataSource: BasketDataSourceLocal()
-            )),
-            deleteBasketUsecase: DeleteBasketUsecase(basketRepository: BasketRepositoryImpl(
-                remoteDataSource: BasketDataSourceRemote(
-                    networkContract: NetworkService(),
-                    authenticationLocalStorage: AuthenticationLocalStorage(defaults: UserDefaults.standard)
-                ),
-                localDataSource: BasketDataSourceLocal()
-            ))
-        )
+        viewModel: DependencyInjector.instance.viewModelsDI.shoppingCart(navigationCoordinator: RootViewModel())
     )
 }
 

@@ -6,13 +6,16 @@ protocol PaymentDataSourceRemoteContract: DataSourceRemoteContract {
     func getPaymentMethods() async throws -> CommonResponse<[PaymentMethodResponseModel]>?
     func getPaymentCards() async throws -> CommonResponse<[PaymentCardResponseModel]>?
     func addPaymentCard(dto: AddPaymentCardDto) async throws -> CommonResponse<PaymentCardResponseModel>?
-    func pay(dto: PayDto) async throws -> CommonResponse<PayCompleteResponseModel>?
+    func pay(dto: PayDto) async throws -> CommonResponse<OrderResponseModel>?
     func removePaymentCard(cardId: String) async throws -> CommonResponse<PaymentCardResponseModel>?
     func getLocations() async throws -> CommonResponse<[LocationResponseModel]>?;
     func addLocation(dto: AddLocationDto) async throws -> CommonResponse<LocationResponseModel>?;
+    func getAllCoupons() async throws -> CommonResponse<[Coupon]>?;
+    func verifyCoupon(req: VerifyOrderDto ) async throws -> CommonResponse<VerifyOrderResponseModel>?
 }
 
 final class PaymentDataSourceRemote : PaymentDataSourceRemoteContract {
+
     private var networkContract: NetworkServiceContract;
     private var authenticationLocalStorage: AuthenticationLocalStorage;
     
@@ -115,7 +118,7 @@ final class PaymentDataSourceRemote : PaymentDataSourceRemoteContract {
         );
     }
     
-    func pay(dto: PayDto) async throws -> CommonResponse<PayCompleteResponseModel>? {
+    func pay(dto: PayDto) async throws -> CommonResponse<OrderResponseModel>? {
         let headers = formHeaders(customHeaders: nil)
         
         let formEndpoint = CustomEndpoint(
@@ -125,7 +128,7 @@ final class PaymentDataSourceRemote : PaymentDataSourceRemoteContract {
         )
         
         return try await self.networkContract.fetchConcurrency(
-            type: CommonResponse<PayCompleteResponseModel>?.self,
+            type: CommonResponse<OrderResponseModel>?.self,
             customUrl: formEndpoint.urlMain,
             headers: formEndpoint.headers,
             body: dto,
@@ -150,4 +153,42 @@ final class PaymentDataSourceRemote : PaymentDataSourceRemoteContract {
             method: "DELETE"
         );
     }
+    
+    func getAllCoupons() async throws -> CommonResponse<[Coupon]>? {
+        let headers = formHeaders(customHeaders: nil)
+        
+        let formEndpoint = CustomEndpoint(
+            path: NetworkUrlConstant.coupon,
+            headers: headers,
+            queries: nil
+        )
+        
+        return try await self.networkContract.fetchConcurrency(
+            type: CommonResponse<[Coupon]>?.self,
+            customUrl: formEndpoint.urlMain,
+            headers: formEndpoint.headers,
+            body: nil,
+            method: "GET"
+        );
+    }
+    
+    func verifyCoupon(req: VerifyOrderDto) async throws -> CommonResponse<VerifyOrderResponseModel>? {
+        let headers = formHeaders(customHeaders: nil)
+        
+        let formEndpoint = CustomEndpoint(
+            path: NetworkUrlConstant.checkOrder,
+            headers: headers,
+            queries: nil
+        )
+        
+        return try await self.networkContract.fetchConcurrency(
+            type: CommonResponse<VerifyOrderResponseModel>?.self,
+            customUrl: formEndpoint.urlMain,
+            headers: formEndpoint.headers,
+            body: req,
+            method: "POST"
+        );
+    }
+    
+    
 }

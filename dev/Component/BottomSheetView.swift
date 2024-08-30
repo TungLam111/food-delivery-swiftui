@@ -66,6 +66,7 @@ struct PaymentBottomSheetView: View {
                         }
                         
                         Button(action: {
+                            isPresented = false
                             confirmPay()
                         }) {
                             Text("Proceed")

@@ -23,7 +23,15 @@ class NetworkUrlConstant {
     static let location = "location"
     
     static let order = "order"
+    static let cancelOrder = "order/{id}/cancel"
+    static let orderOne = "order/{id}"
+    static let checkOrder = "order/check"
+    
+    static let coupon = "coupon"
 
+    static func replaceId(path: String, id: String) -> String {
+        return path.replacingOccurrences(of: "id", with: id);
+    }
 }
 
 struct CustomEndpoint {

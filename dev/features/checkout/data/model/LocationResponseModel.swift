@@ -12,7 +12,7 @@ struct LocationResponseModel: Codable, Hashable {
     let address: String
     let name: String
     let latitude: Double
-    let longtitude: Double
+    let longitude: Double
     let ggPlaceId: String;
     let userId: String;
     
@@ -21,7 +21,7 @@ struct LocationResponseModel: Codable, Hashable {
         case address
         case name
         case latitude
-        case longtitude
+        case longitude
         case ggPlaceId
         case userId
     }
@@ -31,7 +31,7 @@ struct LocationResponseModel: Codable, Hashable {
         self.name = try container.decode(String.self, forKey: .name)
         self.address = try container.decode(String.self, forKey: .address)
         self.latitude = try container.decode(Double.self, forKey: .latitude)
-        self.longtitude = try container.decode(Double.self, forKey: .longtitude)
+        self.longitude = try container.decode(Double.self, forKey: .longitude)
         self.id = try container.decode(String.self, forKey: .id)
         self.userId = try container.decode(String.self, forKey: .userId)
         self.ggPlaceId = try container.decode(String.self, forKey: .ggPlaceId)

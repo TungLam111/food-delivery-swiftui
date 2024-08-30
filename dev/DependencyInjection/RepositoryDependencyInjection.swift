@@ -33,4 +33,8 @@ class RepositoriesDependencyInjection {
     private(set) lazy var paymentRepository = PaymentRepositoryImpl(
         remoteDatasource: self.datasourcesDI.paymentDataSourceLocalContract
     )
+    
+    private(set) lazy var orderRepository = OrderRepositoryImpl(
+        remoteDatasource: self.datasourcesDI.orderDataSourceRemoteContract
+    )
 }

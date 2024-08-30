@@ -78,7 +78,8 @@ final class ViewModelsDependencyInjector  {
             payCompleteUsecase: usecasesDI.payComplete,
             removePaymentCardUsecase: usecasesDI.removePaymentCard,
             getLocationsUsecase: usecasesDI.getLocation,
-            addLocationUsecase: usecasesDI.addLocation
+            addLocationUsecase: usecasesDI.addLocation,
+            verifyOrderUsecase: usecasesDI.verifyOrder
         )
     }
     
@@ -108,5 +109,12 @@ final class ViewModelsDependencyInjector  {
             createAccountUsecase: usecasesDI.signupUsecase
         )
     }
-
+    
+    func coupon(navigationCoordinator: NavigationCoordinator, args: CouponArgs) -> CouponViewModel{
+        return CouponViewModel(
+            navigator: navigationCoordinator,
+            argument: args,
+            getListCouponUsecase: usecasesDI.getListCoupon
+        )
+    }
 }

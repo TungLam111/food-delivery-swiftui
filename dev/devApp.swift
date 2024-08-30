@@ -17,9 +17,11 @@ struct devApp: App {
                 let authStorage = AuthenticationLocalStorage(defaults: UserDefaults.standard)
                 let accessToken = authStorage.getAccessToken()
                 if (accessToken != nil && accessToken != "") {
-                    HomeView(viewModel: DependencyInjector.instance.viewModelsDI.home(navigationCoordinator: rootViewModel))
+                    ConversationScreen(viewModel: ConversationViewModel())
                         .navigationDestination(for: RootViewModel.Destination.self) { destination in
                             switch destination {
+                            case .chat(let vm):
+                                ConversationScreen(viewModel: vm)
                             case .landing(let vm):
                                 LandingView(viewModel: vm)
                             case .authentication(let vm):
@@ -44,12 +46,16 @@ struct devApp: App {
                                 LoginView(viewModel: vm)
                             case .signup(vm: let vm):
                                 SignupView(viewModel: vm)
+                            case .coupon(vm: let vm):
+                                CouponView(viewModel: vm)
                             }
                         }
                 } else {
                     LandingView(viewModel: DependencyInjector.instance.viewModelsDI.landing(navigationCoordinator: rootViewModel))
                         .navigationDestination(for: RootViewModel.Destination.self) { destination in
                             switch destination {
+                            case .chat(let vm):
+                                ConversationScreen(viewModel: vm)
                             case .landing(let vm):
                                 LandingView(viewModel: vm)
                             case .authentication(let vm):
@@ -74,6 +80,8 @@ struct devApp: App {
                                 LoginView(viewModel: vm)
                             case .signup(vm: let vm):
                                 SignupView(viewModel: vm)
+                            case .coupon(vm: let vm):
+                                CouponView(viewModel: vm)
                             }
                         }
                 }

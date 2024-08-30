@@ -49,10 +49,17 @@ struct CheckoutView: View {
                                 onTap: {
                                     
                                 }),
-                            content: CardManagementView(
+                            content: PayManagementView(
+                                paymentMethods: $viewModel.paymentMethods,
                                 cards: $viewModel.paymentCards,
                                 addCard: viewModel
-                                    .addCard
+                                    .addCard,
+                                onSelectCard: { value in
+                                    viewModel.onSelectCard(index: value)
+                                },
+                                onSelectMethod: { value in
+                                    viewModel.onSelectMethod(index: value)
+                                }
                             )
                         ).frame(maxWidth: .infinity)
                         
@@ -64,7 +71,12 @@ struct CheckoutView: View {
                                 }),
                             content: AddressView(
                                 addresses: $viewModel.addresses,
-                                addAddress: viewModel.addAddress
+                                addAddress: {
+                                    viewModel.addAddress()
+                                },
+                                onSelectAddress: { index in
+                                    viewModel.onSelectAddress(index: index)
+                                }
                             )
                         )
                         
@@ -77,42 +89,27 @@ struct CheckoutView: View {
                             content: VStack(
                                 content: {
                                     HStack {
-                                        TextField("Enter your promocode", text: $viewModel.promocode)
-                                            .font(.custom(FontConstants.defautFont, size: 17))
-                                            .fontWeight(.medium)
-                                            .fontWeight(.bold)
-                                            .foregroundColor(ColorConstants.cFF000000)
-                                            .padding(.vertical, 10)
-                                            .accentColor(.black)
-                                        
-                                        Image(systemName: "person")
+                                        Image(systemName: "checkmark.seal")
                                             .foregroundColor(.gray)
+                                        
+                                        Text("Select coupon code")
+                                            .font(.custom(FontConstants.defautFont, size: 18))
+                                            .fontWeight(.medium)
+                                            .foregroundColor(.black)
+                                        
+                                        Spacer()
+                                        
                                     }
-                                    .padding(.vertical, 5)
-                                    .padding(.horizontal, 15)
-                                    .background(Color(.systemGray6))
+                                    .padding()
+                                    .background(Color.white)
                                     .cornerRadius(10)
-                                    .overlay(
-                                        RoundedRectangle(cornerRadius: 10)
-                                            .stroke(Color.gray, lineWidth: 1)
-                                    )
-                                    
-                                    HStack {
-                                        Image(systemName: "exclamationmark.triangle")
-                                            .foregroundColor(.gray)
-                                        
-                                        Text("The promo discount will be applied to card total sum")
-                                            .font(.custom(FontConstants.defautFont, size: 15))
-                                            .fontWeight(.medium)
-                                        
+                                    .shadow(radius: 1)
+                                    .onTapGesture {
+                                        viewModel.navToCoupon();
                                     }
-                                    .frame(maxWidth: .infinity, alignment: .leading)
-                                    .padding(.vertical, 5)
-                                    
                                 })
                         )
-                        
-                        Spacer().frame(height: 200)
+                        Spacer().frame(height: 300)
                     }
                     
                 }.frame(
@@ -127,6 +124,36 @@ struct CheckoutView: View {
             
             VStack {
                 HStack {
+                    Text("Delivery")
+                        .font(.custom(FontConstants.defautFont, size: 25))
+                        .fontWeight(.medium)
+                        .foregroundColor(.white)
+                    
+                    Spacer()
+                    
+                    Text("$\(String(viewModel.verifyOrderInfo?.deliveryCost ?? 0))")
+                        .font(.custom(FontConstants.defautFont, size: 25))
+                        .fontWeight(.medium)
+                        .foregroundColor(.white)
+                }.padding(.horizontal, 20)
+                    .padding(.top, 10)
+                
+                HStack {
+                    Text("Discount")
+                        .font(.custom(FontConstants.defautFont, size: 25))
+                        .fontWeight(.medium)
+                        .foregroundColor(.white)
+                    
+                    Spacer()
+                    
+                    Text("$\(String(viewModel.verifyOrderInfo?.discount ?? 0))")
+                        .font(.custom(FontConstants.defautFont, size: 25))
+                        .fontWeight(.medium)
+                        .foregroundColor(.white)
+                }.padding(.horizontal, 20)
+                    .padding(.top, 10)
+                
+                HStack {
                     Text("Total")
                         .font(.custom(FontConstants.defautFont, size: 25))
                         .fontWeight(.medium)
@@ -134,7 +161,7 @@ struct CheckoutView: View {
                     
                     Spacer()
                     
-                    Text("$100")
+                    Text("$\(String(viewModel.verifyOrderInfo?.totalCost ?? 0))")
                         .font(.custom(FontConstants.defautFont, size: 25))
                         .fontWeight(.medium)
                         .foregroundColor(.white)

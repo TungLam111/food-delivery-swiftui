@@ -197,6 +197,18 @@ final class NetworkService: NetworkServiceContract {
             return apiResponse;
         }
         
+        if let commonResponse = apiResponse as? CommonResponse<LocationResponseModel>
+        {
+            if commonResponse.hasError {
+                throw FetchConcurrencyError.apiError(
+                    errorCode: commonResponse.errorCode,
+                    message: commonResponse.message
+                )
+            }
+            
+            return apiResponse;
+        }
+        
         return apiResponse
     }
 }

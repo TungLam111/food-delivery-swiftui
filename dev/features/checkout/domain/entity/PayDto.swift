@@ -9,8 +9,8 @@ import Foundation
 
 final class PayDto : Encodable {
     var orderType: String // { ship, take_away, reserve }
-    var couponId: String
-    var paymentCardId: String
+    var couponId: String?
+    var paymentCardId: String?
     var paymentMethodId: String
     var locationId: String?
     var shipAddress: String
@@ -19,8 +19,8 @@ final class PayDto : Encodable {
     
     init(
         orderType: String,
-        couponId: String,
-        paymentCardId: String,
+        couponId: String?,
+        paymentCardId: String?,
         paymentMethodId: String,
         locationId: String?,
         shipAddress: String,
